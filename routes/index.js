@@ -13,8 +13,8 @@ function authenticationMiddleware () {
     if (req.isAuthenticated()) {
       return next()
     }
-    return next()
-    // res.redirect('/login?notLogged=true')
+    // return next()
+    res.redirect('/login?notLogged=true')
   }
 }
 
