@@ -3,3 +3,39 @@
     width: auto; height: 100%;
     box-shadow: 0px 1px 5px #555;
     }
+
+#title-public{
+    letter-spacing: 0.5vw;
+    padding-left: 20px;
+    font-size: 140%;
+    font-weight: 950;
+}
+
+.drop-responsive{
+    color: white;
+    font-size: 130%;
+    border-color: rgba(37, 48, 108, 0.849) !important;
+    background-color: rgba(37, 48, 108, 0.849) !important;
+}
+.drop-responsive-a{
+    color: white;
+    font-size: 150%;
+    /* border-color: #25306c !important; */
+    /* background-color: rgba(37, 48, 108, 0.808) !important; */
+    /* border-bottom: white */
+    
+}
+.drop-responsive-a:hover{
+    color:#25306c !important;
+    font-size: 147% !important;
+    border-color: white !important;
+    background-color: white !important;
+}
+
+#banner{
+    padding: 12em 3em 12.375em 3em ;
+}
+hr{
+    padding: 0;
+	border-top: 1px solid white;
+}

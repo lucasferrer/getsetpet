@@ -118,9 +118,12 @@ function initMap() {
         styles = stylesNight
     }
     map.setOptions({styles: styles})
-
-    var address = [`Rua: Coronel José Venâncio Dias,549 , Vila Jaraguá  - SP`, `Rua: Coronel José Venâncio Dias,749 , Vila Jaraguá  - SP`];
-    var markerTitle = ["adas","dasdsa"]
+    
+    var address = [`Rua: Coronel José Venâncio Dias,549 , Vila Jaraguá  - SP`,
+     `Rua: Coronel José Venâncio Dias,749 , Vila Jaraguá  - SP`,
+      `Rua: Coronel José Venâncio Dias,249 , Vila Jaraguá  - SP`];
+    var markerTitle = ["Alerta","Ok", "Grave"]
+    var icons = ["ylw-diamond.png","grn-diamond.png", "red-diamond.png"]
     var windowContent = '<div id="content">'+
     '<div id="siteNotice">'+
     '</div>'+
@@ -136,12 +139,12 @@ function initMap() {
 
 
     for (i = 0; i < address.length; i++){
-    geocodeAddress(geocoder, map, address, markerTitle, windowContent, i);
+    geocodeAddress(geocoder, map, address, markerTitle, icons,  windowContent, i);
     }
 }
 
-function geocodeAddress(geocoder, resultsMap, address, markerTitle, windowContent , i) {
-    
+function geocodeAddress(geocoder, resultsMap, address, markerTitle, icons, windowContent , i) {
+  var baseIconUrl = "http://maps.google.com/mapfiles/kml/paddle/"
     
         geocoder.geocode({ 'address': address[i] }, function (results, status) {
             console.log(results)
@@ -161,7 +164,8 @@ function geocodeAddress(geocoder, resultsMap, address, markerTitle, windowConten
             var marker = new google.maps.Marker({
                 map: resultsMap,
                 position: results[0].geometry.location,
-                title: titleMarker
+                title: titleMarker,
+                icon: baseIconUrl + icons[i]
             });
             // console.log(marker)
             marker.addListener('click', function() {
