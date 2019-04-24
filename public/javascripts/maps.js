@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 function initMap() {
     var map = new google.maps.Map(document.getElementById('google-maps'), {
-        zoom: 16,
+        zoom: 15,
         center: { lat: -34.397, lng: 150.644 }
     });
     var geocoder = new google.maps.Geocoder();

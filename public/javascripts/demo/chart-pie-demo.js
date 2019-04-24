@@ -7,11 +7,11 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],
+    labels: ["Critico", "Atenção", "Normal"],
     datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      data: [],
+      backgroundColor: ['#e74a3b', '#f6c23e', '#1cc88a'],
+      hoverBackgroundColor: ['red', 'yellow', 'green'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
@@ -33,3 +33,8 @@ var myPieChart = new Chart(ctx, {
     cutoutPercentage: 80,
   },
 });
+
+
+// DATA A SER RECEBIDA DO BANCO, E JOGADA PARA ARRAY
+myPieChart.data.datasets[0].data = [55, 20, 25]
+myPieChart.update()
