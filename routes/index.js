@@ -47,7 +47,7 @@ router.get('/', function(req, res, next) {
 router.get('/index', authenticationMiddleware(), function(req, res, next) {
   res.render('index', { title: title , username: req.session.passport.user});
 });
-router.get('/charts', authenticationMiddleware(), function(req, res, next) {
+router.get('/chart', authenticationMiddleware(), function(req, res, next) {
   res.render('charts', { title: title , username: req.session.passport.user });
 });
 
@@ -55,7 +55,11 @@ router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
 });
 router.get('/register', authenticationMiddleware(), function(req, res, next) {
-  res.render('register', { title: title , username: req.session.passport.user });
+  var data = [
+    { id: 1, name: "Administrador" },
+    { id: 2, name: "Moderador"},
+];
+  res.render('register', { data: data,  title: title , username: req.session.passport.user });
 });
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
   res.render('tables', { title: title , username: req.session.passport.user });

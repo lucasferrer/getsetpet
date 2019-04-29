@@ -39,7 +39,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.set('view engine', 'ejs')    // Setamos que nossa engine será o ejs
 // app.use(expressLayouts)          // Definimos que vamos utilizar o express-ejs-layouts na nossa aplicação
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 app.use(logger('dev'));
 app.use(express.json());

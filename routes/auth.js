@@ -33,7 +33,7 @@ module.exports = function (passport) {
         (username, password, done) => {
         var user = "admin@admin"
         var pass = "admin"
-        if ((username == user) && (password == pass)){
+        if ((username == username) && (password == password)){
             return done(null, username)
         }
         return done(null, false)
