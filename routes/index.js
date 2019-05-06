@@ -55,13 +55,19 @@ router.get('/chart', authenticationMiddleware(), function(req, res, next) {
 router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
 });
-router.get('/register', authenticationMiddleware(), function(req, res, next) {
+router.get('/register', function(req, res, next) {
+  
   var data = [
     { id: 1, name: "Administrador" },
     { id: 2, name: "Moderador"},
 ];
-  res.render('register', { data: data,  title: title , username: req.session.passport.user });
-});
+
+  if(req.query.susess){
+  res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
+  }
+ else{
+  res.render('register', { data: data,  title: title , message: ""});
+}});
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
   res.render('tables', { title: title , username: req.session.passport.user });
 });

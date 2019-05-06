@@ -29,25 +29,25 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Criar uma nova conta!</h1>
               </div>
-              <form class="user">
+              <form class="user" action="/crud/teste" method="post">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                      placeholder="Primeiro Nome">
+                      placeholder="Primeiro Nome" name="FirstName">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="exampleLastName"
-                      placeholder="Ultimo Nome">
+                      placeholder="Ultimo Nome" name="LastName">
                   </div>
                 </div>
                 <div class="form-group">
                   <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                    placeholder="Endereço de e-mail">
+                    placeholder="Endereço de e-mail" name="InputEmail">
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="password" class="form-control form-control-user" id="exampleInputPassword"
-                      placeholder="Senha">
+                      placeholder="Senha" name="InputPassword">
                   </div>
                   <div class="col-sm-6">
                     <input type="password" class="form-control form-control-user" id="exampleRepeatPassword"
@@ -60,7 +60,7 @@
                   </div>
                   <div class="col-sm-6">
                       Nivel de acesso:
-                    <select class="form-control">
+                    <select class="form-control" name="NivelAcesso">
 
                         <% for(var i=0; i < data.length; i++) { %>
                           
@@ -71,11 +71,11 @@
                     </select>
                   </div>
                 </div>
-                <a href="/index" class="btn btn-primary btn-user btn-block">
-                  Registrar conta
-                </a>
+                <input type="submit" class="btn btn-primary btn-user btn-block" value="Registrar conta">
+                  <%= message %>
                 <hr>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -84,6 +84,7 @@
   </div>
 
   <% include Shared/calljs %>
+  <!-- <script src="../public/javascripts/teste.js"></script> -->
 
 </body>
 
