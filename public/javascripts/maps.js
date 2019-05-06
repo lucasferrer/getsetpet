@@ -6,7 +6,7 @@ $(document).ready(function () {
 function initMap() {
   var map = new google.maps.Map(document.getElementById('google-maps'), {
     zoom: 15,
-    center: { lat: -34.397, lng: 150.644 }
+    center: { lat: -34.397, lng: 150.644 },
   });
   var geocoder = new google.maps.Geocoder();
 
@@ -114,7 +114,7 @@ function initMap() {
 
   ]
   var d = new Date()
-  if (d.getHours() >= 18) {
+  if (d.getHours() >= 18 || d.getHours() <= 5) {
     styles = stylesNight
   }
   map.setOptions({ styles: styles })
