@@ -11,23 +11,23 @@ const sql = require('mssql');
 
 // CONEXÃO COM BANCO DE DADOS
 
-// const config = {
-//   user: 'bandtec',
-//   password: 'Projetox2018',
-//   server: 'innerhealth.database.windows.net', // You can use 'localhost\\instance' to connect to named instance
-//   database: 'GetSetPet',
-//   options: {
-//     encrypt: true, // Use this if you're on Windows Azure
-//     // Async: true,
-//     // connectionTimeout: 30000
-//   }
-// }
+const config = {
+  user: 'bandtec',
+  password: 'Projetox2018',
+  server: 'innerhealth.database.windows.net', // You can use 'localhost\\instance' to connect to named instance
+  database: 'GetSetPet',
+  options: {
+    encrypt: true, // Use this if you're on Windows Azure
+    // Async: true,
+    // connectionTimeout: 30000
+  }
+}
 
-// sql.connect(config)
-//   .then(conn => {
-//   global.conn = conn
+sql.connect(config)
+  .then(conn => {
+  global.conn = conn
 
-//     console.log("conectado!")
+    console.log("conectado!")
 
 // FIM PARAMETROS CONEXÃO COM BANCO
 
@@ -116,7 +116,7 @@ const sql = require('mssql');
 
 
     // FIM CHAVE CONEXÃO DO BANCO
-  // }
+  }
 
-  // )
-  // .catch(err => console.log(err));
+  )
+  .catch(err => console.log(err));

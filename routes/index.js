@@ -58,44 +58,8 @@ router.get('/chart', authenticationMiddleware(), function(req, res, next) {
 router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
 });
-<<<<<<< HEAD
-router.get('/register/:status?', function(req, res, next) {
-  console.log(req.params.status)
-  if(req.params.status == "ok"){
-=======
+
 router.get('/register', function(req, res, next) {
-  
-  var data = [
-    { id: 1, name: "Administrador" },
-    { id: 2, name: "Moderador"},
-];
-
-  password = req.body.inputPassword;
-
-  if(req.query.susess){
-
->>>>>>> ed7bda82559af5c7ce4d022808ae10ba59cb2530
-    res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
-  }
-})
-router.get('/registers', function(req, res, next) {
-
-//   // if(req.query.susess){
-//   //   res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
-//   //   res.end()
-//   // }
-//   // if(req.query.sucess == "dpuser"){
-//   //   res.render('register', { data: data,  title: title  , message: "Usuario já cadastrado!"});  
-//   // }
-//   // if(req.query.sucess == "dpemail"){
-//   //   res.render('register', { data: data,  title: title  , message: "Email já cadastrado na base!"});
-//   // }
-//   // if(!req.query.sucess){
-//   //   res.render('register', { data: data,  title: title  , message: "Erro inesperado, tente novamente!"})
-//   //   res.end()
-//   // }
-
- 
   res.render('register', { data: data,  title: title , message: ""});
 });
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
