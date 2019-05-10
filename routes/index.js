@@ -5,9 +5,12 @@ var passport = require('passport');
 /* GET home page. */
 
 // TITLE DO SITE
-
+// Variaveis Globais
 const title = "Get Set Pet";
-
+var data = [
+  { id: 1, name: "Administrador" },
+  { id: 2, name: "Moderador"},
+];
 
 // ROTA DE CONTROLE DE LOGIN - LOGOUT
 
@@ -55,19 +58,32 @@ router.get('/chart', authenticationMiddleware(), function(req, res, next) {
 router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
 });
-router.get('/register', function(req, res, next) {
-  
-  var data = [
-    { id: 1, name: "Administrador" },
-    { id: 2, name: "Moderador"},
-];
-
-  if(req.query.susess){
-  res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
+router.get('/register/:status?', function(req, res, next) {
+  console.log(req.params.status)
+  if(req.params.status == "ok"){
+    res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
   }
- else{
+})
+router.get('/registers', function(req, res, next) {
+
+//   // if(req.query.susess){
+//   //   res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
+//   //   res.end()
+//   // }
+//   // if(req.query.sucess == "dpuser"){
+//   //   res.render('register', { data: data,  title: title  , message: "Usuario já cadastrado!"});  
+//   // }
+//   // if(req.query.sucess == "dpemail"){
+//   //   res.render('register', { data: data,  title: title  , message: "Email já cadastrado na base!"});
+//   // }
+//   // if(!req.query.sucess){
+//   //   res.render('register', { data: data,  title: title  , message: "Erro inesperado, tente novamente!"})
+//   //   res.end()
+//   // }
+
+ 
   res.render('register', { data: data,  title: title , message: ""});
-}});
+});
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
   res.render('tables', { title: title , username: req.session.passport.user });
 });

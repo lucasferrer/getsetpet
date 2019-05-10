@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
 
@@ -29,11 +29,12 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Criar uma nova conta!</h1>
               </div>
-              <form class="user" action="/crud/teste" method="post">
+              <!--  -->
+              <form class="user" onsubmit="return(validar());" action="/crud/cadusuario" method="post">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                      placeholder="Primeiro Nome" name="FirstName">
+                      placeholder="Primeiro Nome" name="FirstName" onkeypress="return textonly(event);">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="exampleLastName"
@@ -53,28 +54,56 @@
                     <input type="password" class="form-control form-control-user" id="exampleRepeatPassword"
                       placeholder="Repetir senha">
                   </div>
+                  <script>
+                    function validar() {
+                      alert("teste")
+                      var senha = document.getElementById("exampleInputPassword");
+                      alert(senha.value)
+                      if (senha.value == "") {
+                        // senha.select();
+                        senha.focus();
+                        console.log(senha)
+                        return false
+
+                      }
+                    }
+
+                    function textonly(e) {
+                      var code;
+                      if (!e) var e = window.event;
+                      if (e.keyCode) code = e.keyCode;
+                      else if (e.which) code = e.which;
+                      var character = String.fromCharCode(code);
+                      //alert('Character was ' + character);
+                      //alert(code);
+                      //if (code == 8) return true;
+                      var AllowRegex = /^[\ba-zA-Z\s-]$/;
+                      if (AllowRegex.test(character)) return true;
+                      return false;
+                    }
+                  </script>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                      
+
                   </div>
                   <div class="col-sm-6">
-                      Nivel de acesso:
+                    Nivel de acesso:
                     <select class="form-control" name="NivelAcesso">
 
-                        <% for(var i=0; i < data.length; i++) { %>
-                          
-                          <option value="<%= data[i].id %>"><%= data[i].name %></option>
+                      <% for(var i=0; i < data.length; i++) { %>
 
-                       <% } %>
+                      <option value="<%= data[i].id %>"><%= data[i].name %></option>
+
+                      <% } %>
 
                     </select>
                   </div>
                 </div>
                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Registrar conta">
-                  <%= message %>
+                <%= message %>
                 <hr>
-              </div>
+            </div>
             </form>
           </div>
         </div>
@@ -83,7 +112,10 @@
 
   </div>
 
-  <% include Shared/calljs %>
+  <!-- Custom scripts for all pages-->
+  <!-- <script src="javascripts/sb-admin-2.min.js"></script> -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
   <!-- <script src="../public/javascripts/teste.js"></script> -->
 
 </body>
