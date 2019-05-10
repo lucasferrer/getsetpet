@@ -26,12 +26,18 @@ function authenticationMiddleware() {
   }
 }
 
+<<<<<<< HEAD
 router.post('/teste', function (req, res) {
   var nome = req.body.FirstName;
   console.log(nome);
 
   res.redirect('/register?susess=true');
 })
+=======
+router.post('/validar', function(req, res){
+  res.redirect('/register?susess=true');
+});
+>>>>>>> ed7bda82559af5c7ce4d022808ae10ba59cb2530
 
 router.post('/cadusuario', (req, res) => {
   const cryptr = new Cryptr('myTotalySecretKey');
