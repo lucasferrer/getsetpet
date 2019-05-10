@@ -29,34 +29,35 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Criar uma nova conta!</h1>
               </div>
-              <form class="user" action="/crud/teste" method="post">
+              <form class="user" action="/crud/validar" method="POST" onsubmit="return(validacao());">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                      placeholder="Primeiro Nome" name="FirstName">
+                      placeholder="Primeiro Nome" name="FirstName" onkeypress="return textonly(event);">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="exampleLastName"
-                      placeholder="Ultimo Nome" name="LastName">
+                      placeholder="Ultimo Nome" name="LastName" onkeypress="return textonly(event);">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                    placeholder="Endereço de e-mail" name="InputEmail">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" r="Endereço de e-mail" name="InputEmail"  placeholder="Email" onkeypress="return validEmail(event);">
+                    
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword"
+                    <input type="password" class="form-control form-control-user" id="password"
                       placeholder="Senha" name="InputPassword">
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword"
+                    <input type="password" class="form-control form-control-user" id="confirmPassword"
                       placeholder="Repetir senha">
+
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                      
+              
                   </div>
                   <div class="col-sm-6">
                       Nivel de acesso:
@@ -82,9 +83,9 @@
     </div>
 
   </div>
+  
 
-  <% include Shared/calljs %>
-  <!-- <script src="../public/javascripts/teste.js"></script> -->
+ <script src="javascripts/validacao.js"></script>
 
 </body>
 

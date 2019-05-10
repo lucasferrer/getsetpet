@@ -21,12 +21,9 @@ function authenticationMiddleware () {
   }
 }
 
-router.post('/teste', function(req, res){
-    var nome = req.body.FirstName;
-    console.log(nome);
-
-    res.redirect('/register?susess=true');
-})
+router.post('/validar', function(req, res){
+  res.redirect('/register?susess=true');
+});
 
 
 

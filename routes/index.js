@@ -62,8 +62,11 @@ router.get('/register', function(req, res, next) {
     { id: 2, name: "Moderador"},
 ];
 
+  password = req.body.inputPassword;
+
   if(req.query.susess){
-  res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
+
+    res.render('register', { data: data,  title: title  , message: "cadastro feito com sucesso"});
   }
  else{
   res.render('register', { data: data,  title: title , message: ""});
