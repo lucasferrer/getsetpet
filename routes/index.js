@@ -59,7 +59,7 @@ router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
 });
 
-router.get('/register', function(req, res, next) {
+router.get('/register', authenticationMiddleware(), function(req, res, next) {
   res.render('register', { data: data,  title: title , message: ""});
 });
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
@@ -77,5 +77,11 @@ router.get('/utilities-animation', authenticationMiddleware(), function(req, res
 router.get('/utilities-other', authenticationMiddleware(), function(req, res, next) {
   res.render('utilities-other', { title: title , username: req.session.passport.user });
 });
+
+router.get('/registerlocal', authenticationMiddleware(), function(_req,res,_next){
+  res.render('local', {data: data, title: title, message: ""})
+});
+
+
 
 module.exports = router;

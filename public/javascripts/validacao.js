@@ -24,13 +24,29 @@ function validacao(){
   var password = document.getElementById("password");
   var passwordConfirm = document.getElementById("confirmPassword");
 
-  if(password.value == ""){
-    password.focus();
+  //validações
+  //validação firstname
+  if(firstName.value == ""){
+    firstName.focus();
     return false;
   }
+  else{
+    //validação lastName
+    if(lastName.value == ""){
+      lastName.focus();
+      return false
+    }
+    else{
+      //validações password
+      if(password.value == ""){
+        password.focus();
+        return false;
+      } 
 
-  if(password.value !== passwordConfirm.value){
-    passwordConfirm.focus();
-    return false;
+      if(password.value !== passwordConfirm.value){
+        passwordConfirm.focus();
+        return false;
+      }
+    }
   }
 }

@@ -27,7 +27,7 @@ function authenticationMiddleware() {
 }
 
 
-router.post('/cadusuario', (req, res) => {
+router.post('/cadusuario', authenticationMiddleware(), (req, res) => {
 
   const cryptr = new Cryptr('myTotalySecretKey');
   const nome = req.body.FirstName + " " + req.body.LastName;
@@ -65,8 +65,41 @@ router.post('/cadusuario', (req, res) => {
     }
     })
 
-})
+});
 
+router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
+
+  const loja = req.body.NomeLoja;
+  const estado = req.body.Estado;
+  const cidade = req.body.Cidade;
+  const cep = req.body.CEP;
+  const bairro = req.body.Bairro;
+  const nmEndereco = req.body.NomeEndereco;
+  const numero = req.body.Numero;
+  const complemento = req.body.Complemento;
+  const telefone = req.body.Telefone;
+
+  global.conn.request()
+    .query(`
+    INSERT INTO ENDERECO(ESTADO, CIDADE, CEP, BAIRRO, NM_ENDERECO, NUMERO_ENDERECO, COMPLEMENTO) VALUES('${estado}', '${cidade}', '${cep}', '${bairro}', '${nmEndereco}', ${numero}, '${complemento}');
+    DECLARE @ID INT;
+    select @ID = ID_ENDERECO from ENDERECO WHERE ESTADO = '${estado}' and CIDADE = '${cidade}' and CEP = '${cep}' and BAIRRO = '${bairro}' and NM_ENDERECO = '${nmEndereco}' and NUMERO_ENDERECO = ${numero} and COMPLEMENTO = '${complemento}';
+    insert into LOJA(NM_LOJA, TELEFONE, ID_ENDERECO) values('${loja}', '${telefone}', @ID);`)
+    .then((results) =>{
+      var linhasafetadas = results.rowsAffected;
+      console.log("Rota de cadastro usuario ativada, Linhas Afetadas no banco: " + linhasafetadas);
+      if (linhasafetadas.length != 0) {
+        res.render('local', {title: title, message: "Registro realizado com sucesso"});
+        // return res.json({message: "cadastro feito com sucesso"})
+      }
+    })
+    .catch((err) => {
+
+      console.log(err)
+      res.render('local', { title: title, message: "Erro inesperado, tente novamente!" });
+
+    })         
+})
 
 module.exports = router;
 

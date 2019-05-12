@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title><%= title %></title>
+
+  <% include Shared/callcss %>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Cadastrar loja!</h1>
+              </div>
+           
+              <form class="user" onsubmit="return(validacaoLocal());" action="/crud/cadloja" method="post">
+                
+                
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-user" id="NomeLoja" name="NomeLoja"  placeholder="Nome da Loja" maxlength="30">
+                  </div>
+                
+
+                  <div class="form-group row">
+
+                      <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="text" class="form-control form-control-user" id="Estado"
+                          placeholder="Estado" name="Estado" maxlength="20" onkeypress="return textonly(event);">
+                      </div>
+    
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-user" id="Cidade"
+                          placeholder="Cidade" name="Cidade" maxlength="45">
+                      </div>                  
+                    </div>
+
+                <div class="form-group row">
+
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="CEP"
+                      placeholder="CEP" name="CEP"  onKeyPress="return(ConsisteNumerico('12',this,event))">
+                  </div>
+
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" id="Bairro"
+                      placeholder="Bairro" name="Bairro" maxlength="50">
+                  </div>                  
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="text" class="form-control form-control-user" id="NomeEndereco"
+                        placeholder="Rua/Avenida" name="NomeEndereco" maxlength="50">
+                    </div>
+  
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-control-user" id="Numero"
+                        placeholder="Numero" name="Numero" onKeyPress="return(ConsisteNumerico('10',this,event))">
+                    </div>                  
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="text" class="form-control form-control-user" id="Complemento"
+                        placeholder="Complemento" name="Complemento" maxlength="1" onkeypress="return textonly(event);">
+                    </div>
+
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-control-user" id="Telefone"
+                        placeholder="Telefone" name="Telefone" onKeyPress="return(ConsisteNumerico('15',this,event))">
+                    </div>
+                </div>
+                
+                <input type="submit" class="btn btn-primary btn-user btn-block" value="Registrar loja">
+                <%= message %>
+                <hr>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+
+ <script src="javascripts/validacaoLocal.js"></script>
+
+</body>
+
+</html> 
