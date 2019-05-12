@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy
-
+const Cryptr = require('cryptr');
 
 module.exports = function (passport) {
     
@@ -31,34 +31,30 @@ module.exports = function (passport) {
         passwordField: 'password'
     },
         (username, password, done) => {
-        var user = "admin@admin"
-        var pass = "admin"
-        if ((username == username) && (password == password)){
-            return done(null, username)
-        }
-        return done(null, false)
+        const cryptr = new Cryptr('myTotalySecretKey');
+        var passwd = cryptr.encrypt(password);
             // query comparando as senhas
-        //     global.conn.request().query(`select login, nm_usuario, idUsuario, FK_acesso as idAcesso, 
-        //     FK_loc_trabalho as idLocalidade from usuarios where login = '${username}' and PWDCOMPARE('${password}', senha) = 1;`)
-        // .then((results)=>{
-        //     let resultado = results.recordset;
-        //     // console.log(resultado);
+            global.conn.request().query(`select NOME, USERNAME, EMAIL, FK_NV_ACESSO
+            from USUARIO where USERNAME = '${username}' OR EMAIL = '${username}' AND SENHA = '${passwd}' ;`)
+        .then((results)=>{
+            let resultado = results.recordset;
+            // console.log(resultado);
             
-        //         //Verifica se retornou usuário
-        //        if(resultado.length == 0) {
+                //Verifica se retornou usuário
+               if(resultado.length == 0) {
 
-        //              return done(null, false)
-        //         }
+                     return done(null, false)
+                }
                                      
                 // caso não entrar nos ifs anteriores retorna o usuário
-            //         return done(null, resultado)
+                    return done(null, resultado)
                     
           
-            // }) // Caso der erro na procura de usuário
-            // .catch((err)=>{
+            }) // Caso der erro na procura de usuário
+            .catch((err)=>{
 
-            //     console.log(err);
-            // })
+                console.log(err);
+            })
             }
     ));
 

@@ -17,7 +17,7 @@ var data = [
 function authenticationMiddleware () {  
   return function (req, res, next) {
     if (req.isAuthenticated()) {
-      console.log(req.session.passport.user)
+      // console.log(req.session.passport.user)
       return next()
     }
     // return next()
@@ -49,7 +49,8 @@ router.get('/', function(req, res, next) {
   res.render('public', { title: 'ADMIN' });
 });
 router.get('/index', authenticationMiddleware(), function(req, res, next) {
-  res.render('index', { title: title , username: req.session.passport.user});
+  res.render('index', { title: title , username: req.session.passport.user[0].NOME});
+  // console.log(req.session.passport.user[0].NOME)
 });
 router.get('/chart', authenticationMiddleware(), function(req, res, next) {
   res.render('charts', { title: title , username: req.session.passport.user });

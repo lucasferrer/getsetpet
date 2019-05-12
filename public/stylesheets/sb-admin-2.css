@@ -11602,6 +11602,12 @@ a:focus {
   background-size: cover;
 }
 
+.bg-register-local-image {
+  background: url("../img/localregister.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
 .bg-password-image {
   background: url("../img/forgot.jpg");
   background-position: center;

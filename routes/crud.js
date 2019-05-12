@@ -18,7 +18,7 @@ var data = [
 function authenticationMiddleware() {
   return function (req, res, next) {
     if (req.isAuthenticated()) {
-      console.log(req.session.passport.user)
+      // console.log(req.session.passport.user)
       return next()
     }
     // return next()
