@@ -26,13 +26,19 @@ function authenticationMiddleware () {
 }
 
 router.get('/login', function(req, res){
-  if(req.query.fail)
+  if(req.isAuthenticated()){
+    res.redirect('/index')
+  }
+  else if(req.query.fail){
     res.render('login',{ title: title + ' Login', message: 'Usuário e/ou senha incorretos!' });
-  if(req.query.notLogged)
-    res.render('login',{ title: title + ' Login', message: 'Por gentileza realize o login para acessar o sistema!' });
-  else
+  }
+  else if(req.query.notLogged){
+    res.render('login',{ title: title + ' Login', message: 'Por gentileza realize o login para acessar o sistema' });
+  }
+  else{
     res.render('login', { title: title + ' Login', message: "" });
-});
+  }
+  });
 
 router.post('/login',
   passport.authenticate('local', { successRedirect: '/index', failureRedirect: '/login?fail=true' })

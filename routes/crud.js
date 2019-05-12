@@ -32,7 +32,7 @@ router.post('/cadusuario', authenticationMiddleware(), (req, res) => {
   const cryptr = new Cryptr('myTotalySecretKey');
   const nome = req.body.FirstName + " " + req.body.LastName;
   const email = req.body.InputEmail;
-  const username = req.body.FirstName + "_" + req.body.LastName;
+  const username = req.body.FirstName + "." + req.body.LastName;
   const senha = cryptr.encrypt(req.body.InputPassword);
   const nvAcesso = parseInt(req.body.NivelAcesso);
 
