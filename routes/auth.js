@@ -33,12 +33,13 @@ module.exports = function (passport) {
         (username, password, done) => {
         const cryptr = new Cryptr('myTotalySecretKey');
         var passwd = cryptr.encrypt(password);
+        console.log(passwd)
             // query comparando as senhas
             global.conn.request().query(`select NOME, USERNAME, EMAIL, FK_NV_ACESSO
-            from USUARIO where USERNAME = '${username}' OR EMAIL = '${username}' AND SENHA = '${passwd}' ;`)
+            from USUARIO where (USERNAME = '${username}' OR EMAIL = '${username}') AND PWDCOMPARE('${password}', senha) = 1;`)
         .then((results)=>{
             let resultado = results.recordset;
-            // console.log(resultado);
+            console.log(resultado);
             
                 //Verifica se retornou usuário
                if(resultado.length == 0) {

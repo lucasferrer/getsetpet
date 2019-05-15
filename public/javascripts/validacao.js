@@ -50,3 +50,23 @@ function validacao(){
     }
   }
 }
+function validacaoEdit(){
+  var email = document.getElementById("exampleInputEmail");
+  var firstName = document.getElementById("exampleFirstName");
+  var lastName = document.getElementById("exampleLastName");
+
+  //validações
+  //validação firstname
+  if(firstName.value == ""){
+    firstName.focus();
+    return false;
+  }
+  else{
+    //validação lastName
+    if(lastName.value == ""){
+      lastName.focus();
+      return false
+    }
+
+  }
+}

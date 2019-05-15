@@ -12,6 +12,10 @@ var data = [
   { id: 1, name: "Administrador" },
   { id: 2, name: "Moderador" },
 ];
+var status = [
+  { id: 1, name: "Ativado" },
+  { id: 2, name: "Desativado" },
+];
 
 // ROTA DE CONTROLE DE LOGIN - LOGOUT
 
@@ -39,7 +43,7 @@ router.post('/cadusuario', authenticationMiddleware(), (req, res) => {
   // const decryptedString = cryptr.decrypt(senha);
 
   global.conn.request()
-    .query(`insert into USUARIO (NOME, EMAIL, USERNAME, SENHA, FK_NV_ACESSO) values ('${nome}','${email}','${username}','${senha}','${nvAcesso}');`)
+    .query(`insert into USUARIO (NOME, EMAIL, USERNAME, SENHA, FK_NV_ACESSO) values ('${nome}','${email}','${username}',PWDENCRYPT('${senha}'),'${nvAcesso}');`)
     .then((results) => {
       var linhasafetadas = results.rowsAffected;
       console.log("Rota de cadastro usuario ativada, Linhas Afetadas no banco: " + linhasafetadas);
@@ -100,6 +104,90 @@ router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
 
     })         
 })
+
+router.get('/usertable', function(req,res,next){
+  global.conn.request()
+    .query(`
+    select ID_USUARIO as ID, NOME as Nome, EMAIL as Email,USERNAME as Username, TIPO_ACESSO as Nivel_acesso from USUARIO, NV_ACESSO where FK_NV_ACESSO = ID_NV_ACESSO;`)
+    .then((results) =>{
+      var resultadobd = results.recordset;
+
+      console.log(Object.keys(resultadobd[0]))
+   
+        res.render('usertable', {title: title, username: req.session.passport.user[0].NOME,tabUserKeys: Object.keys(resultadobd[0]), tabUserData: resultadobd});
+        // return res.json({message: "cadastro feito com sucesso"})
+      
+    })
+    .catch((err) => {
+
+      console.log(err)
+      res.render('error');
+
+    })
+  
+});
+router.get('/useredit', function(req,res,next){
+
+  var name = ""+ req.query.Nome
+  var splitnome = name.split(" ")
+  var firstname = splitnome[0];
+  var lastname = splitnome[1];
+  if(splitnome.length > 2){
+    for(i=2; i < name.length; i++){
+      lastname += " "+ name[i]
+    }
+    
+  }
+  var userInfo = [
+    { id: req.query.idUser, firstname: firstname, lastname: lastname, email: req.query.Email },
+  ];
+
+
+
+  res.render('edituser', { status: status, data: data,  title: title , message: "", userinfo: userInfo});
+
+  
+});
+router.post('/useredit', function(req,res,next){
+  var userInfo = [
+    { id: '', firstname: '', lastname: '', email: '' },
+  ];
+  var lastnameparse = ""+ req.body.LastName
+  lastnameparse = lastnameparse.split(" ")
+  const nome = req.body.FirstName + " " + req.body.LastName;
+  const email = req.body.InputEmail;
+  const username = req.body.FirstName + "." + lastnameparse[0];
+  const nvAcesso = parseInt(req.body.NivelAcesso);
+  
+  // const decryptedString = cryptr.decrypt(senha);
+
+  global.conn.request()
+    .query(`update USUARIO set NOME='${nome}', EMAIL='${email}', USERNAME='${username}', FK_NV_ACESSO='${nvAcesso}' where EMAIL = '${email}';`)
+    .then((results) => {
+      var linhasafetadas = results.rowsAffected;
+      console.log("Rota de edição usuario ativada, Linhas Afetadas no banco: " + linhasafetadas);
+      if (linhasafetadas.length != 0) {
+        res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "cadastro feito com sucesso" });
+        // return res.json({message: "cadastro feito com sucesso"})
+      }
+    }) // Caso der erro na procura de usuário
+    .catch((err) => {
+      var erro = "" + err;
+      var dpusuario = erro.indexOf(username);
+      var dpemail = erro.indexOf(email);
+
+      if (dpusuario != (-1)) {
+        res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Usuario já cadastrado!" });
+      }
+      else if (dpemail != (-1)) {
+        res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Email já cadastrado na base!" });
+      }
+      else{
+      console.log(err)
+      res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Erro inesperado, tente novamente!" });
+    }
+    })
+});
 
 module.exports = router;
 

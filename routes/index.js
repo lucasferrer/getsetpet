@@ -17,7 +17,7 @@ var data = [
 function authenticationMiddleware () {  
   return function (req, res, next) {
     if (req.isAuthenticated()) {
-      // console.log(req.session.passport.user)
+      // console.log(req.session.passport.user[0].NOME)
       return next()
     }
     // return next()
@@ -56,10 +56,9 @@ router.get('/', function(req, res, next) {
 });
 router.get('/index', authenticationMiddleware(), function(req, res, next) {
   res.render('index', { title: title , username: req.session.passport.user[0].NOME});
-  // console.log(req.session.passport.user[0].NOME)
 });
 router.get('/chart', authenticationMiddleware(), function(req, res, next) {
-  res.render('charts', { title: title , username: req.session.passport.user });
+  res.render('charts', { title: title , username: req.session.passport.user[0].NOME });
 });
 
 router.get('/forgot', function(req, res, next) {
@@ -70,24 +69,25 @@ router.get('/register', authenticationMiddleware(), function(req, res, next) {
   res.render('register', { data: data,  title: title , message: ""});
 });
 router.get('/tables', authenticationMiddleware(), function(req, res, next) {
-  res.render('tables', { title: title , username: req.session.passport.user });
+  res.render('tables', { title: title , username: req.session.passport.user[0].NOME });
 });
 router.get('/cards', authenticationMiddleware(), function(req, res, next) {
-  res.render('cards', { title: title , username: req.session.passport.user });
+  res.render('cards', { title: title , username: req.session.passport.user[0].NOME });
 });
 router.get('/utilities-color', authenticationMiddleware(), function(req, res, next) {
-  res.render('utilities-color', { title: title , username: req.session.passport.user });
+  res.render('utilities-color', { title: title , username: req.session.passport.user[0].NOME });
 });
 router.get('/utilities-animation', authenticationMiddleware(), function(req, res, next) {
-  res.render('utilities-animation', { title: title , username: req.session.passport.user });
+  res.render('utilities-animation', { title: title , username: req.session.passport.user[0].NOME });
 });
 router.get('/utilities-other', authenticationMiddleware(), function(req, res, next) {
-  res.render('utilities-other', { title: title , username: req.session.passport.user });
+  res.render('utilities-other', { title: title , username: req.session.passport.user[0].NOME });
 });
 
-router.get('/registerlocal', authenticationMiddleware(), function(_req,res,_next){
+router.get('/registerlocal', authenticationMiddleware(), function(req,res,_next){
   res.render('local', {data: data, title: title, message: ""})
 });
+
 
 
 

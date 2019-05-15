@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title><%= title %></title>
+
+  <% include Shared/callcss %>
+
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Editar usuário</h1>
+              </div>
+              <!--  -->
+              <form class="user" onsubmit="return(validacaoEdit());" action="/crud/useredit" method="POST">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input value="<%= userinfo[0].firstname %>"  type="text" class="form-control form-control-user" id="exampleFirstName"
+                      placeholder="Primeiro Nome" name="FirstName" maxlength="10" onkeypress="return textonly(event);">
+                  </div>
+                  <div class="col-sm-6">
+                    <input value="<%= userinfo[0].lastname %>" type="text" class="form-control form-control-user" id="exampleLastName"
+                      placeholder="Ultimo Nome" name="LastName" maxlength="10" onkeypress="return textonly(event);">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input value="<%= userinfo[0].email %>" type="email" class="form-control form-control-user" maxlength="50" id="exampleInputEmail" r="Endereço de e-mail" name="InputEmail"  placeholder="Email" onkeypress="return validEmail(event);">
+                    
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <!-- <input type="password" class="form-control form-control-user" id="password"
+                      placeholder="Senha" maxlength="16" name="InputPassword"> -->
+                  </div>
+                  <div class="col-sm-6">
+                    <!-- <input type="password" class="form-control form-control-user" id="confirmPassword"
+                      placeholder="Repetir senha" maxlength="16"> -->
+
+                  </div>
+                  
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-1 mb-3 mb-sm-0"></div>
+                  <div class="col-sm-4 mb-3 mb-sm-0">
+                      Status:
+                      <select class="form-control" name="Status">
+  
+                        <% for(var i=0; i < data.length; i++) { %>
+  
+                        <option value="<%= data[i].id %>"><%= data[i].name %></option>
+  
+                        <% } %>
+  
+                      </select>
+                    </div>
+                    <div class="col-sm-2 mb-3 mb-sm-0"></div>
+                  <div class="col-sm-4">
+                    Nivel de acesso:
+                    <select class="form-control" name="NivelAcesso">
+
+                      <% for(var i=0; i < status.length; i++) { %>
+
+                      <option value="<%= status[i].id %>"><%= status[i].name %></option>
+
+                      <% } %>
+
+                    </select>
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-primary btn-user btn-block" value="Editar conta">
+                <%= message %>
+                <hr>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+
+ <script src="/javascripts/validacao.js"></script>
+
+</body>
+
+</html>

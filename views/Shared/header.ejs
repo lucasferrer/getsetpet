@@ -34,11 +34,11 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
           <i class="fa fa-fw fa-address-card-o"></i>
-          <span>Cadastros</span>
+          <span>Cadastrar</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Cadastrar:</h6>
+            <h6 class="collapse-header">Cadastro:</h6>
             <a class="collapse-item" href="/register">Novo Usuario</a>
             <a class="collapse-item" href="/registerlocal">Nova localidade</a>
           </div>
@@ -49,15 +49,13 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
           <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
+          <span>Editar</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="/utilities-color">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+            <h6 class="collapse-header">Edição:</h6>
+            <a class="collapse-item" href="/crud/usertable">Usuarios</a>
+            <a class="collapse-item" href="utilities-border.html">Lojas</a>
           </div>
         </div>
       </li>
@@ -277,7 +275,7 @@
                 <span class="mr-2 d-none d-lg-inline small"><% if(username) { %>
                   <%= username %>
                 <%}%></span>
-                <img class="img-profile rounded-circle" src="img/usericon.jpg">
+                <img class="img-profile rounded-circle" src="../img/usericon.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
