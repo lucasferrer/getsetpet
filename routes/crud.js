@@ -105,6 +105,24 @@ router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
     })         
 })
 
+router.get('/lojatable', (req,res,next) => {
+  global.conn.request().query(`SELECT ID_LOJA AS ID, NM_LOJA AS Nome, TELEFONE AS Telefone, ESTADO AS Estado, CIDADE AS Cidade,
+   CEP AS Cep, BAIRRO AS Bairro, NM_ENDERECO AS Endereco, NUMERO_ENDERECO AS Numero, COMPLEMENTO AS Complemento
+    FROM LOJA, ENDERECO WHERE LOJA.ID_ENDERECO = ENDERECO.ID_ENDERECO;`)
+    .then ((results) => {
+      var resultadobd = results.recordset;
+
+      res.render('lojatable', {title: title, username: req.session.passport.user[0].NOME, tabLojaKeys: Object.keys(resultadobd[0]), tabLojaData: resultadobd});
+      console.log(resultadobd);  
+    }).catch((err) => {
+
+      console.log(err)
+      res.render('error');
+      
+    })
+
+})
+
 router.get('/usertable', function(req,res,next){
   global.conn.request()
     .query(`
@@ -125,6 +143,9 @@ router.get('/usertable', function(req,res,next){
 
     })
   
+});
+router.get('/lojaedit', (req,res) => {
+
 });
 router.get('/useredit', function(req,res,next){
 

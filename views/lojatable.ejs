@@ -24,20 +24,20 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Lista de usuário</h1>
+          <h1 class="h3 mb-2 text-gray-800">Lista de Lojas</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Usuários</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Lojas</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <% for (i=0; i < tabUserKeys.length; i++){ %>
-                      <th><%= tabUserKeys[i] %></th>
+                      <% for (i=0; i < tabLojaKeys.length; i++){ %>
+                      <th><%= tabLojaKeys[i] %></th>
                       
                       <% }; %>
                       <th>Editar</th>
@@ -45,16 +45,24 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% tabUserData.forEach(function(tabUserData){ %>
+                    <% tabLojaData.forEach(function(tabLojaData){ %>
                     
                       <tr>
-                        <td><%= tabUserData.ID %></td>
-                        <td><%= tabUserData.Nome %></td>
-                        <td><%= tabUserData.Email %></td>
-                        <td><%= tabUserData.Username %></td>
-                        <td><%= tabUserData.Nivel_acesso %></td>
-                        <td><a href="/crud/useredit/?idUser=<%= tabUserData.ID %>&Nome=<%= tabUserData.Nome %>&Email=<%= tabUserData.Email %>">Editar</a></td>
-                        <td><a href="/crud/userdelete/<%= tabUserData.ID %>">Deletar</a></td>
+                        <td><%= tabLojaData.ID %></td>
+                        <td><%= tabLojaData.Nome %></td>
+                        <td><%= tabLojaData.Telefone %></td>
+                        <td><%= tabLojaData.Estado %></td>
+                        <td><%= tabLojaData.Cidade %></td>
+                        <td><%= tabLojaData.Cep %></td>
+                        <td><%= tabLojaData.Bairro %></td>
+                        <td><%= tabLojaData.Endereco %></td>
+                        <td><%= tabLojaData.Numero %></td>
+                        <td><%= tabLojaData.Complemtento %></td>
+                        <td><a href="/crud/lojaedit/?ID=<%= tabLojaData.ID %>&Nome=<%= tabLojaData.Nome %>&
+                          Telefone=<%= tabLojaData.Telefone %>&Estado=<%=tabLoja.Data.Estado %>&Cidade=<%=tabLoja.Data.Cidade %>&
+                          Cep=<%= tabLoja.Data.Cep %>&Bairro=<%= tabLoja.Data.Bairro%>&Endereco=<%=tabLoja.Data.Endereco%>&
+                          Numero=<%=tabLoja.Data.Numero%>&Complemento=<%=tabLoja.Data.Complemento%>">Editar</a></td>
+                        <td><a href="/crud/lojadelete/<%= tabLoja.Data.ID %>">Deletar</a></td>
                       </tr>
                 <% }); %>
               </tbody>
@@ -67,6 +75,7 @@
         <!-- /.container-fluid -->
 
       </div>
+
       <!-- End of Main Content -->
 
       <% include Shared/footer %>
