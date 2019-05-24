@@ -23,11 +23,11 @@ function authenticationMiddleware() {
   return function (req, res, next) {
     if (req.isAuthenticated()) {
       // console.log(req.session.passport.user)
-      return next()
+      return next();
     }
     // return next()
-    res.redirect('/login?notLogged=true')
-  }
+    res.redirect('/login?notLogged=true');
+  };
 }
 
 
@@ -64,10 +64,10 @@ router.post('/cadusuario', authenticationMiddleware(), (req, res) => {
         res.render('register', { data: data, title: title, message: "Email já cadastrado na base!" });
       }
       else{
-      console.log(err)
+      console.log(err);
       res.render('register', { data: data, title: title, message: "Erro inesperado, tente novamente!" });
     }
-    })
+    });
 
 });
 
@@ -99,13 +99,13 @@ router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
     })
     .catch((err) => {
 
-      console.log(err)
+      console.log(err);
       res.render('local', { title: title, message: "Erro inesperado, tente novamente!" });
 
-    })         
-})
+    });         
+});
 
-router.get('/lojatable', (req,res,next) => {
+router.get('/lojatable', authenticationMiddleware(), (req,res,next) => {
   global.conn.request().query(`SELECT ID_LOJA AS ID, NM_LOJA AS Nome, TELEFONE AS Telefone, ESTADO AS Estado, CIDADE AS Cidade,
    CEP AS Cep, BAIRRO AS Bairro, NM_ENDERECO AS Endereco, NUMERO_ENDERECO AS Numero, COMPLEMENTO AS Complemento
     FROM LOJA, ENDERECO WHERE LOJA.ID_ENDERECO = ENDERECO.ID_ENDERECO;`)
@@ -116,12 +116,12 @@ router.get('/lojatable', (req,res,next) => {
       console.log(resultadobd);  
     }).catch((err) => {
 
-      console.log(err)
+      console.log(err);
       res.render('error');
       
-    })
+    });
 
-})
+});
 
 router.get('/usertable', function(req,res,next){
   global.conn.request()
@@ -130,7 +130,7 @@ router.get('/usertable', function(req,res,next){
     .then((results) =>{
       var resultadobd = results.recordset;
 
-      console.log(Object.keys(resultadobd[0]))
+      console.log(Object.keys(resultadobd[0]));
    
         res.render('usertable', {title: title, username: req.session.passport.user[0].NOME,tabUserKeys: Object.keys(resultadobd[0]), tabUserData: resultadobd});
         // return res.json({message: "cadastro feito com sucesso"})
@@ -138,24 +138,40 @@ router.get('/usertable', function(req,res,next){
     })
     .catch((err) => {
 
-      console.log(err)
+      console.log(err);
       res.render('error');
 
-    })
+    });
   
 });
-router.get('/lojaedit', (req,res) => {
+router.get('/lojaedit', authenticationMiddleware(), (req,res) => {
+  var nomeLoja = req.query.Nome;
+  var telefone = req.query.Telefone;
+  var estado = req.query.Estado;
+  var cidade = req.query.Cidade;
+  var cep = req.query.Cep;
+  var bairro = req.query.Bairro;
+  var endereco = req.query.Endereco;
+  var numero = req.query.Numero;
+  var complemento = req.query.Complemento;
+
+  var lojaInfo = [
+    { id: req.query.idUser, NomeLj: nomeLoja, Estado: estado, Cidade: cidade, Cep: cep, Bairro: bairro, Endereco: endereco,
+    Numero: numero, Complemento: complemento, Telefone: telefone }
+  ];
+  res.render('editloja', {title: title, lojainfo: lojaInfo, message: ""});
 
 });
+
 router.get('/useredit', function(req,res,next){
 
-  var name = ""+ req.query.Nome
-  var splitnome = name.split(" ")
+  var name = ""+ req.query.Nome;
+  var splitnome = name.split(" ");
   var firstname = splitnome[0];
   var lastname = splitnome[1];
   if(splitnome.length > 2){
     for(i=2; i < name.length; i++){
-      lastname += " "+ name[i]
+      lastname += " "+ name[i];
     }
     
   }
@@ -163,18 +179,16 @@ router.get('/useredit', function(req,res,next){
     { id: req.query.idUser, firstname: firstname, lastname: lastname, email: req.query.Email },
   ];
 
-
-
   res.render('edituser', { status: status, data: data,  title: title , message: "", userinfo: userInfo});
-
   
 });
+
 router.post('/useredit', function(req,res,next){
   var userInfo = [
     { id: '', firstname: '', lastname: '', email: '' },
   ];
-  var lastnameparse = ""+ req.body.LastName
-  lastnameparse = lastnameparse.split(" ")
+  var lastnameparse = ""+ req.body.LastName;
+  lastnameparse = lastnameparse.split(" ");
   const nome = req.body.FirstName + " " + req.body.LastName;
   const email = req.body.InputEmail;
   const username = req.body.FirstName + "." + lastnameparse[0];
@@ -204,10 +218,46 @@ router.post('/useredit', function(req,res,next){
         res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Email já cadastrado na base!" });
       }
       else{
-      console.log(err)
+      console.log(err);
       res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Erro inesperado, tente novamente!" });
     }
-    })
+    });
+});
+
+router.post('/editarloja', function(req,res) {
+  var nomeLoja = req.body.NomeLoja;
+  var telefone = req.body.Telefone;
+  var estado = req.body.Estado;
+  var cidade = req.body.Cidade;
+  var cep = req.body.Cep;
+  var bairro = req.body.Bairro;
+  var endereco = req.body.NmEndereco;
+  var numero = req.body.Numero;
+  var complemento = req.body.Complemento;
+  var estadoAntigo = req.query.Estado;
+  var cidadeAntigo = req.query.Cidade;
+  var cepAntigo = req.query.Cep;
+  var bairroAntigo = req.query.Bairro;
+  var enderecoAntigo = req.query.NmEndereco;
+  var numeroAntigo = req.query.Numero;
+  var complementoAntigo = req.query.Complemento;
+
+
+  console.log( "esse é o nome da loja" +nomeLoja);
+
+  var lojaInfo = [
+    { id: req.query.idUser, NomeLj: nomeLoja, Estado: estado, Cidade: cidade, Cep: cep, Bairro: bairro, Endereco: endereco,
+    Numero: numero, Complemento: complemento, Telefone: telefone }
+  ];
+  global.conn.request().query(`UPDATE `)
+.then((results) =>{
+  var linhasafetadas = results.rowsAffected;
+  console.log("Rota de edição de loja ativada, Linhas Afetadas no banco: " + linhasafetadas);
+
+    res.render('editloja', {title: title, message: "Alteração realizada com sucasso!"});
+
+});
+
 });
 
 module.exports = router;

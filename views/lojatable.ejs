@@ -57,12 +57,12 @@
                         <td><%= tabLojaData.Bairro %></td>
                         <td><%= tabLojaData.Endereco %></td>
                         <td><%= tabLojaData.Numero %></td>
-                        <td><%= tabLojaData.Complemtento %></td>
+                        <td><%= tabLojaData.Complemento %></td>
                         <td><a href="/crud/lojaedit/?ID=<%= tabLojaData.ID %>&Nome=<%= tabLojaData.Nome %>&
-                          Telefone=<%= tabLojaData.Telefone %>&Estado=<%=tabLoja.Data.Estado %>&Cidade=<%=tabLoja.Data.Cidade %>&
-                          Cep=<%= tabLoja.Data.Cep %>&Bairro=<%= tabLoja.Data.Bairro%>&Endereco=<%=tabLoja.Data.Endereco%>&
-                          Numero=<%=tabLoja.Data.Numero%>&Complemento=<%=tabLoja.Data.Complemento%>">Editar</a></td>
-                        <td><a href="/crud/lojadelete/<%= tabLoja.Data.ID %>">Deletar</a></td>
+                          Estado=<%=tabLojaData.Estado %>&Cidade=<%=tabLojaData.Cidade %>&Cep=<%= tabLojaData.Cep %>
+                          &Bairro=<%= tabLojaData.Bairro%>&Endereco=<%= tabLojaData.Endereco%>&
+                          Numero=<%= tabLojaData.Numero%>&Complemento=<%= tabLojaData.Complemento%>&Telefone=<%= tabLojaData.Telefone %>">Editar</a></td>
+
                       </tr>
                 <% }); %>
               </tbody>
