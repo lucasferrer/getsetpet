@@ -12,6 +12,7 @@ const sql = require('mssql');
 // CONEXÃO COM BANCO DE DADOS
 
 const config = {
+  // Parametros
   user: 'ptcheu',
   password: 'Getsetpet2019',
   server: 'getsetpetserver.database.windows.net', // You can use 'localhost\\instance' to connect to named instance
