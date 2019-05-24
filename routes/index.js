@@ -57,9 +57,7 @@ router.get('/', function(req, res, next) {
 router.get('/index', authenticationMiddleware(), function(req, res, next) {
   res.render('index', { title: title , username: req.session.passport.user[0].NOME});
 });
-router.get('/chart', authenticationMiddleware(), function(req, res, next) {
-  res.render('charts', { title: title , username: req.session.passport.user[0].NOME });
-});
+
 
 router.get('/forgot', function(req, res, next) {
   res.render('forgot-password', { title: title });
