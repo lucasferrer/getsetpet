@@ -107,12 +107,12 @@ router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
 
 router.get('/lojatable', authenticationMiddleware(), (req,res,next) => {
   global.conn.request().query(`SELECT ID_LOJA AS ID, NM_LOJA AS Nome, TELEFONE AS Telefone, ESTADO AS Estado, CIDADE AS Cidade,
-   CEP AS Cep, BAIRRO AS Bairro, NM_ENDERECO AS Endereco, NUMERO_ENDERECO AS Numero, COMPLEMENTO AS Complemento
+   CEP AS Cep, BAIRRO AS Bairro, LOGRADOURO AS Endereco, NUMERO_ENDERECO AS Numero, COMPLEMENTO AS Complemento
     FROM LOJA, ENDERECO WHERE LOJA.ID_ENDERECO = ENDERECO.ID_ENDERECO;`)
     .then ((results) => {
       var resultadobd = results.recordset;
 
-      res.render('lojatable', {title: title, username: req.session.passport.user[0].NOME, tabLojaKeys: Object.keys(resultadobd[0]), tabLojaData: resultadobd});
+      res.render('lojatable', {title: title, username: req.session.passport.user[0].NOME, tabLojaKeys: Object.keys(resultadobd[0]), tabLojaData: resultadobd, message: ""});
       console.log(resultadobd);  
     }).catch((err) => {
 
@@ -225,7 +225,7 @@ router.post('/useredit', function(req,res,next){
 });
 
 router.post('/editarloja', function(req,res) {
-  var nomeLoja = req.body.NomeLoja;
+  var nomeLoja = req.body.nomeloja;
   var telefone = req.body.Telefone;
   var estado = req.body.Estado;
   var cidade = req.body.Cidade;
@@ -234,31 +234,27 @@ router.post('/editarloja', function(req,res) {
   var endereco = req.body.NmEndereco;
   var numero = req.body.Numero;
   var complemento = req.body.Complemento;
-  var estadoAntigo = req.query.Estado;
-  var cidadeAntigo = req.query.Cidade;
-  var cepAntigo = req.query.Cep;
-  var bairroAntigo = req.query.Bairro;
-  var enderecoAntigo = req.query.NmEndereco;
-  var numeroAntigo = req.query.Numero;
-  var complementoAntigo = req.query.Complemento;
-
-
-  console.log( "esse é o nome da loja" +nomeLoja);
 
   var lojaInfo = [
     { id: req.query.idUser, NomeLj: nomeLoja, Estado: estado, Cidade: cidade, Cep: cep, Bairro: bairro, Endereco: endereco,
     Numero: numero, Complemento: complemento, Telefone: telefone }
   ];
-  global.conn.request().query(`UPDATE `)
-.then((results) =>{
-  var linhasafetadas = results.rowsAffected;
-  console.log("Rota de edição de loja ativada, Linhas Afetadas no banco: " + linhasafetadas);
+  global.conn.request().query(`DECLARE @ID INT;
+  select @ID = ID_ENDERECO from LOJA WHERE NM_LOJA = '${nomeLoja}';
+  UPDATE ENDERECO SET ESTADO = '${estado}', CIDADE = '${cidade}', CEP = '${cep}', BAIRRO = '${bairro}',lOGRADOURO = '${endereco}', NUMERO_ENDERECO = ${numero}, COMPLEMENTO = '${complemento}' WHERE ID_ENDERECO = @ID;
+  UPDATE LOJA SET TELEFONE = '${telefone}' WHERE ID_ENDERECO = @ID `)
+  .then((results) =>{
+    var linhasafetadas = results.rowsAffected;
+    console.log("Rota de edição de loja ativada, Linhas Afetadas no banco: " + linhasafetadas);
 
-    res.render('editloja', {title: title, message: "Alteração realizada com sucasso!"});
+      res.render('editloja', {status: status, lojainfo: lojaInfo, data: data, title: title, message: "Edição feita com sucesso" });
 
-});
-
-});
+  })
+  .catch((err) => {    
+    console.log("ESSE AQUI É O ERRO ÓOOOOOO >>>>>>>>>>>>>>>>>>"+err);
+    res.render('editloja', {status: status,lojainfo: lojaInfo , data: data, title: title, message: "Erro inesperado, tente novamente!" });
+  });
+})
 
 module.exports = router;
 
