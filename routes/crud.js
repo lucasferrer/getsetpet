@@ -71,7 +71,7 @@ router.post('/cadusuario', authenticationMiddleware(), (req, res) => {
 
 });
 
-router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
+router.post('/cadloja', (req, res) =>{
 
   const loja = req.body.NomeLoja;
   const estado = req.body.Estado;
@@ -85,9 +85,9 @@ router.post('/cadloja', authenticationMiddleware(), (req, res) =>{
 
   global.conn.request()
     .query(`
-    INSERT INTO ENDERECO(ESTADO, CIDADE, CEP, BAIRRO, NM_ENDERECO, NUMERO_ENDERECO, COMPLEMENTO) VALUES('${estado}', '${cidade}', '${cep}', '${bairro}', '${nmEndereco}', ${numero}, '${complemento}');
+    INSERT INTO ENDERECO(ESTADO, CIDADE, CEP, BAIRRO, LOGRADOURO, NUMERO_ENDERECO, COMPLEMENTO) VALUES('${estado}', '${cidade}', '${cep}', '${bairro}', '${nmEndereco}', ${numero}, '${complemento}');
     DECLARE @ID INT;
-    select @ID = ID_ENDERECO from ENDERECO WHERE ESTADO = '${estado}' and CIDADE = '${cidade}' and CEP = '${cep}' and BAIRRO = '${bairro}' and NM_ENDERECO = '${nmEndereco}' and NUMERO_ENDERECO = ${numero} and COMPLEMENTO = '${complemento}';
+    select @ID = ID_ENDERECO from ENDERECO WHERE ESTADO = '${estado}' and CIDADE = '${cidade}' and CEP = '${cep}' and BAIRRO = '${bairro}' and LOGRADOURO = '${nmEndereco}' and NUMERO_ENDERECO = ${numero} and COMPLEMENTO = '${complemento}';
     insert into LOJA(NM_LOJA, TELEFONE, ID_ENDERECO) values('${loja}', '${telefone}', @ID);`)
     .then((results) =>{
       var linhasafetadas = results.rowsAffected;
@@ -126,7 +126,7 @@ router.get('/lojatable', authenticationMiddleware(), (req,res,next) => {
 router.get('/usertable', function(req,res,next){
   global.conn.request()
     .query(`
-    select ID_USUARIO as ID, NOME as Nome, EMAIL as Email,USERNAME as Username, TIPO_ACESSO as Nivel_acesso from USUARIO, NV_ACESSO where FK_NV_ACESSO = ID_NV_ACESSO;`)
+    select ID_USUARIO as ID, NOME as Nome, EMAIL as Email,USERNAME as Username, TIPO_ACESSO as Nivel_acesso from USUARIO, NIVEL_ACESSO where FK_NV_ACESSO = ID_NV_ACESSO;`)
     .then((results) =>{
       var resultadobd = results.recordset;
 

@@ -59,7 +59,7 @@ router.get('/chart', function (req, res, next) {
 router.get('/loja/:localidade?', (req, res, next) => {
   global.conn.request()
     .query(`
-    select ID_COMPUTADOR as id, HOST_NAME as nome from COMPUTADOR where ID_LOJA = ${req.params.localidade}`)
+    select ID_COMPUTADOR as id, HOSTNAME as nome from COMPUTADOR where FK_ID_LOJA = ${req.params.localidade}`)
     .then((results) => {
       var resultadobd = results.recordset;
 
@@ -78,10 +78,9 @@ router.get('/loja/:localidade?', (req, res, next) => {
 router.get('/cpu/:idMaquina?', (req, res, next) => {
   var arrayCpu = [];
   var arrayData = [];
-  var arrayhora = [];
   global.conn.request()
     .query(`
-    select TOP 100 CPU_PORCENTAGEM as cpu, Data, Hora from DADOS_COMPUTADORES`)
+    select TOP 100 CPU_PORCENT as cpu, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR`)
     .then((results) => {
       var dados = results.recordset;
 
@@ -90,16 +89,14 @@ router.get('/cpu/:idMaquina?', (req, res, next) => {
       for (var i = 0; i < dados.length; i++) {
 
         arrayCpu[i] = dados[i].cpu;
-        arrayData[i] = dados[i].Data;
-        arrayhora[i] = dados[i].Hora;
+        arrayData[i] = dados[i].data_hora;
 
       }
       // COLOCANDO OS INFORMAÇÕES TRATADAS DENTRO DO OBJ DADOS PARA FAZER O ENVIO
 
       dados = {
         cpu: arrayCpu.reverse(),
-        data: arrayData.reverse(),
-        hora: arrayhora.reverse(),
+        date: arrayData.reverse(),
       };
 
       // ENVIO DAS INFORMAÇÕES COMO RESPOSTA
@@ -111,7 +108,6 @@ router.get('/cpu/:idMaquina?', (req, res, next) => {
       dados = {}
       arrayCpu = [];
       arrayData = [];
-      arrayhora = [];
       // })
       // res.send(resultadobd);
       // return res.json({message: "cadastro feito com sucesso"})
@@ -133,7 +129,7 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
   arrayhora = [];
   global.conn.request()
     .query(`
-    select TOP 1 HD_LIVRE, HD_UTILIZADO, Data, Hora from DADOS_COMPUTADORES ORDER BY ID_DADO DESC`)
+    select TOP 1 HD_LIVRE, HD_UTILIZADA, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR ORDER BY ID_DADO DESC`)
     .then((results) => {
       var dados = results.recordset;
 
@@ -142,9 +138,8 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
       for (var i = 0; i < dados.length; i++) {
 
         arrayLivre[i] = dados[i].HD_LIVRE;
-        arrayUtilizado[i] = dados[i].HD_UTILIZADO;
-        arrayData[i] = dados[i].Data;
-        arrayhora[i] = dados[i].Hora;
+        arrayUtilizado[i] = dados[i].HD_UTILIZADA;
+        arrayData[i] = dados[i].data_hora;
 
       }
       // COLOCANDO OS INFORMAÇÕES TRATADAS DENTRO DO OBJ DADOS PARA FAZER O ENVIO
@@ -152,8 +147,7 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
       dados = {
         livre: arrayLivre.reverse(),
         utilizado: arrayUtilizado.reverse(),
-        data: arrayData.reverse(),
-        hora: arrayhora.reverse(),
+        date: arrayData.reverse(),
       };
 
       // ENVIO DAS INFORMAÇÕES COMO RESPOSTA
@@ -166,7 +160,6 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
       arrayLivre = [];
       arrayUtilizado = [];
       arrayData = [];
-      arrayhora = [];
       // })
       // res.send(resultadobd);
       // return res.json({message: "cadastro feito com sucesso"})
@@ -179,6 +172,9 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
 
     })
 })
+
+
+
 
 module.exports = router;
 

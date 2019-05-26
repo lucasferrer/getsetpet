@@ -119,6 +119,57 @@ function initMap() {
   }
   map.setOptions({ styles: styles })
 
+// CONEXÃO COM BANCO PARA PEGAR STATUS DAS LOCALIDADES
+
+  var httpLoja = new XMLHttpRequest();
+  httpLoja.open("GET", '/dashboard/loja/' + selecionado, false);
+  httpLoja.send(null);
+
+  var objLoja = JSON.parse(httpLoja.responseText);
+
+  var arrayLoja = [];
+  var arrayLojaId = [];
+
+  var lojas = document.getElementById("loja");
+  lojas.textContent = "";
+
+
+  if (objLoja.length == 0) {
+    var semLoja = document.createElement("option");
+    semLoja.textContent = "Não há laboratórios cadastrados"
+    semLoja.value = null;
+    semLoja.disabled = true;
+    semLoja.selected = true;
+
+    lojas.appendChild(semLoja);
+
+    return;
+  }
+
+  for (var i = 0; i < objLoja.length; i++) {
+    arrayLoja[i] = objLoja[i].nome;
+    arrayLojaId[i] = objLoja[i].id;
+
+    if (i == 0) {
+      var lojaPadrao = document.createElement("option");
+      lojaPadrao.textContent = "Selecione um Laboratório"
+      lojaPadrao.value = null;
+      lojaPadrao.disabled = true;
+      lojaPadrao.selected = true;
+
+      lojas.appendChild(lojaPadrao);
+
+    }
+
+    var loja = document.createElement("option");
+    var optLoja = arrayLoja[i]
+    var optLojaId = arrayLojaId[i]
+    loja.textContent = optLoja;
+    loja.value = optLojaId;
+
+    lojas.appendChild(loja);
+  }
+
   var address = [`Rua: Coronel José Venâncio Dias,549 , Vila Jaraguá  - SP`,
     `Rua: Coronel José Venâncio Dias,749 , Vila Jaraguá  - SP`,
     `Rua: Coronel José Venâncio Dias,249 , Vila Jaraguá  - SP`];
