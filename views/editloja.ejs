@@ -23,11 +23,11 @@
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-5 d-none d-lg-block bg-register-local-image"></div>
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Editar usuário</h1>
+                <h1 class="h4 text-gray-900 mb-4">Editar Loja</h1>
               </div>
               <!--  -->
               <form class="user" action="/crud/editarloja" method="POST">
@@ -79,8 +79,11 @@
                 <input type="submit" class="btn btn-primary btn-user btn-block" value="Editar Loja">
                 <%= message %>
                 <hr>
+              </form>
+              <form action="/crud/lojatable" method="GET" >
+                <input type="submit" class="btn btn-primary btn-user btn-block" value="Voltar" id="voltar">                
+              </form>
             </div>
-            </form>
           </div>
         </div>
       </div>

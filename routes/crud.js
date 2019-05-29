@@ -202,7 +202,7 @@ router.post('/useredit', function(req,res,next){
       var linhasafetadas = results.rowsAffected;
       console.log("Rota de edição usuario ativada, Linhas Afetadas no banco: " + linhasafetadas);
       if (linhasafetadas.length != 0) {
-        res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "cadastro feito com sucesso" });
+        res.render('edituser', {status: status, userinfo: userInfo, data: data, title: title, message: "Edição feita com sucesso" });
         // return res.json({message: "cadastro feito com sucesso"})
       }
     }) // Caso der erro na procura de usuário
