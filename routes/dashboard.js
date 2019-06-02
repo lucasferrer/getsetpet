@@ -80,7 +80,7 @@ router.get('/cpu/:idMaquina?', (req, res, next) => {
   var arrayData = [];
   global.conn.request()
     .query(`
-    select TOP 100 CPU_PORCENT as cpu, convert(varchar(5),DATA_HORA_DADO, 114) as data_hora from DADOS_COMPUTADOR where ID_COMPUTADOR = ${req.params.idMaquina}`)
+    select TOP 100 CPU_PORCENT as cpu, convert(varchar(5),DATA_HORA_DADO, 114) as data_hora from DADOS_COMPUTADOR where ID_COMPUTADOR = ${req.params.idMaquina} order by data_hora desc`)
     .then((results) => {
       var dados = results.recordset;
 

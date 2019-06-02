@@ -231,14 +231,14 @@ var chartRam = new Chart(ctx, {
     labels: ['RAM'],
     datasets: [
       {
-        label: 'Livre',
+        label: 'Usado',
         // data: [67.8],
-        backgroundColor: '#33FF33',
+        backgroundColor: '#FF3333',
       },
       {
-        label: 'Usado',
+        label: 'Livre',
         // data: [20.7],
-        backgroundColor: '#FF3333',
+        backgroundColor: '#33FF33',
       }
     ]
   },
