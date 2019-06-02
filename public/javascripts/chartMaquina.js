@@ -130,7 +130,7 @@ var cfgChartCpu =
 var chartCpu = new Chart(ctxCpu, cfgChartCpu);
 
 
-// CHART DE CONSUMO DE MEMORIA RAM
+// CHART DE CONSUMO DE MEMORIA RAM options.scales.xAxes[1].max
 var barOptions_stacked = {
     tooltips: {
         enabled: false
@@ -140,11 +140,19 @@ var barOptions_stacked = {
     },
     scales: {
         xAxes: [{
+            layout: {
+                      padding: {
+                        // left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                      }
+                    },
             ticks: {
                 beginAtZero:true,
                 fontFamily: "'Open Sans Bold', sans-serif",
-                fontSize:11,
-                max:8000
+                fontSize:16,
+                // max:8000
             },
             scaleLabel:{
                 display:false
@@ -175,8 +183,8 @@ var barOptions_stacked = {
         onComplete: function () {
             var chartInstance = this.chart;
             var ctx = chartInstance.ctx;
-            ctx.textAlign = "left";
-            ctx.font = "9px Open Sans";
+            // ctx.textAlign = "center";
+            ctx.font = "18px Open Sans";
             ctx.fillStyle = "#fff";
 
             Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
@@ -196,23 +204,49 @@ var barOptions_stacked = {
     scaleFontFamily : "Quadon Extra Bold",
 };
 
-var ctx = document.getElementById("myBarChart");
-var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: {
-        labels: ["RAM"],
+// var ctx = document.getElementById("myBarChart");
+// var chartRam = new Chart(ctx, {
+//     type: 'horizontalBar',
+//     data: {
+//         labels: ["RAM"],
         
-        datasets: [{
-            data: [727],
-            backgroundColor: "rgba(63,103,126,1)",
-            hoverBackgroundColor: "rgba(50,90,100,1)"
-        },{
-            data: [238],
-            backgroundColor: "rgba(163,103,126,1)",
-            hoverBackgroundColor: "rgba(140,85,100,1)"
-        }]
-    },
-    options: barOptions_stacked,
+//         datasets: [{
+//             // data: [727],
+//             backgroundColor: "rgba(63,103,126,1)",
+//             hoverBackgroundColor: "rgba(50,90,100,1)"
+//         },{
+//             // data: [238],
+//             backgroundColor: "rgba(163,103,126,1)",
+//             hoverBackgroundColor: "rgba(140,85,100,1)"
+//         }]
+//     },
+//     options: barOptions_stacked,
+// });
+var ctx = document.getElementById('myBarChart');
+
+var chartRam = new Chart(ctx, {
+  type: 'horizontalBar',
+  data: {
+    labels: ['Consumo Ram'],
+    datasets: [
+      {
+        label: 'Livre',
+        data: [67.8],
+        backgroundColor: '#D6E9C6',
+      },
+      {
+        label: 'Usado',
+        data: [20.7],
+        backgroundColor: '#e74a3b',
+      }
+    ]
+  },
+  options: {
+    scales: {
+      xAxes: [{ stacked: true }],
+      yAxes: [{ stacked: true }]
+    }
+  }
 });
 
 
@@ -223,6 +257,7 @@ $('#loja').change(function () {
 
     atualizaChartCPUComParametro(selecionado)
     atualizaChartHdComParametro(selecionado)
+    atualizaChartRamComParametro(selecionado)
 
 
 })
@@ -272,6 +307,33 @@ function atualizaChartHdComParametro(selecionado) {
                 chartHd.data.datasets[0].data = [dados.livre, dados.utilizado]
             }
             chartHd.update()
+        })
+
+}
+function atualizaChartRamComParametro(selecionado) {
+    if (isNaN(selecionado)) {
+        limparCampos()
+        return;
+    }
+
+    $.ajax({
+        method: "GET",
+        url: "/dashboard/ram/" + selecionado,
+
+    })
+        .done(function (data) {
+            dados = data;
+            if (dados.livre.length == 0) {
+                limparCampos();
+                return;
+            }
+            else {
+                chartRam.data.datasets[0].data = dados.utilizado
+                chartRam.data.datasets[1].data = dados.livre
+                console.log(dados.utilizado + dados.livre)
+                chartRam.options.scales.xAxes[0].ticks.max =  parseInt(dados.utilizado) + parseInt(dados.livre)
+            }
+            chartRam.update()
         })
 
 }

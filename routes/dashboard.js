@@ -80,7 +80,7 @@ router.get('/cpu/:idMaquina?', (req, res, next) => {
   var arrayData = [];
   global.conn.request()
     .query(`
-    select TOP 100 CPU_PORCENT as cpu, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR`)
+    select TOP 100 CPU_PORCENT as cpu, convert(varchar(5),DATA_HORA_DADO, 114) as data_hora from DADOS_COMPUTADOR where ID_COMPUTADOR = ${req.params.idMaquina}`)
     .then((results) => {
       var dados = results.recordset;
 
@@ -129,7 +129,7 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
   arrayhora = [];
   global.conn.request()
     .query(`
-    select TOP 1 HD_LIVRE, HD_UTILIZADA, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR ORDER BY ID_DADO DESC`)
+    select TOP 1 HD_LIVRE, HD_UTILIZADA, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR where ID_COMPUTADOR = ${req.params.idMaquina} ORDER BY ID_DADO DESC`)
     .then((results) => {
       var dados = results.recordset;
 
@@ -163,6 +163,118 @@ router.get('/hd/:idMaquina?', (req, res, next) => {
       // })
       // res.send(resultadobd);
       // return res.json({message: "cadastro feito com sucesso"})
+
+    })
+    .catch((err) => {
+
+      console.log(err)
+      res.render('error');
+
+    })
+})
+
+router.get('/ram/:idMaquina?', (req, res, next) => {
+  dados = {}
+  arrayLivre = [];
+  arrayUtilizado = [];
+  arrayData = [];
+  global.conn.request()
+    .query(`
+    select TOP 1 RAM_LIVRE, RAM_UTILIZADA, DATA_HORA_DADO as data_hora from DADOS_COMPUTADOR where ID_COMPUTADOR = ${req.params.idMaquina} ORDER BY ID_DADO DESC`)
+    .then((results) => {
+      var dados = results.recordset;
+
+      // CRIAÇÃO DOS ARRAYS COM AS INFORMAÇÕES RETORNADAS DO BANCO
+
+      for (var i = 0; i < dados.length; i++) {
+
+        arrayLivre[i] = dados[i].RAM_LIVRE;
+        arrayUtilizado[i] = dados[i].RAM_UTILIZADA;
+        arrayData[i] = dados[i].data_hora;
+
+      }
+      // COLOCANDO OS INFORMAÇÕES TRATADAS DENTRO DO OBJ DADOS PARA FAZER O ENVIO
+
+      dados = {
+        livre: arrayLivre.reverse(),
+        utilizado: arrayUtilizado.reverse(),
+        date: arrayData.reverse(),
+      };
+
+      // ENVIO DAS INFORMAÇÕES COMO RESPOSTA
+
+      res.send(dados);
+
+      // LIMPA VARIAVEIS PARA PEGAR PROXIMA COLETA;
+
+      dados = {}
+      arrayLivre = [];
+      arrayUtilizado = [];
+      arrayData = [];
+      // })
+      // res.send(resultadobd);
+      // return res.json({message: "cadastro feito com sucesso"})
+
+    })
+    .catch((err) => {
+
+      console.log(err)
+      res.render('error');
+
+    })
+})
+
+router.get('/laststatus', (req, res, next) => {
+  dados = {}
+  arrayRam = [];
+  arrayCpu = [];
+  arrayHD = [];
+  arrayNomeLoja = [];
+  arrayEndereco = [];
+  arrayUtilizado = [];
+  arrayData = [];
+  arrayhora = [];
+  global.conn.request()
+    .query(`
+    select * from STATUS s
+    inner join (
+    select max(data_hora) as data_hora, COMPUTADOR from status group by COMPUTADOR) a
+    on s.data_hora = a.data_hora and a.COMPUTADOR = s.COMPUTADOR
+    inner join(
+    select * from COMPUTADOR) c
+    on c.ID_COMPUTADOR = a.COMPUTADOR
+    inner join(
+    select ID_LOJA, NM_LOJA, TELEFONE, LOJA.ID_ENDERECO, ESTADO, CIDADE, BAIRRO, LOGRADOURO, NUMERO_ENDERECO
+    from LOJA,ENDERECO where LOJA.ID_ENDERECO = ENDERECO.ID_ENDERECO) l
+    on l.ID_LOJA = c.FK_ID_LOJA
+    `)
+    .then((results) => {
+      var dados = results.recordset;
+
+      // CRIAÇÃO DOS ARRAYS COM AS INFORMAÇÕES RETORNADAS DO BANCO
+
+      for (var i = 0; i < dados.length; i++) {
+
+        arrayRam[i] = dados[i].STATUS_RAM;
+        arrayCpu[i] = dados[i].STATUS_CPU;
+        arrayHD[i] = dados[i].STATUS_HD;
+        arrayHD[i] = dados[i].STATUS_HD;
+        arrayEndereco[i] = dados[i].LOGRADOURO +", "+ dados[i].NUMERO_ENDERECO +", "+ dados[i].BAIRRO +", "+ dados[i].CIDADE +", "+ dados[i].ESTADO;
+        arrayNomeLoja[i] = dados[i].NM_LOJA
+      }
+      // // COLOCANDO OS INFORMAÇÕES TRATADAS DENTRO DO OBJ DADOS PARA FAZER O ENVIO
+
+      dados = {
+        ram: arrayRam,
+        cpu: arrayCpu,
+        hd: arrayHD,
+        endereco: arrayEndereco,
+        nome: arrayNomeLoja,
+      };
+
+      // // ENVIO DAS INFORMAÇÕES COMO RESPOSTA
+
+      res.send(dados);
 
     })
     .catch((err) => {
