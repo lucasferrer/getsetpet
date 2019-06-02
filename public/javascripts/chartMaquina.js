@@ -227,16 +227,16 @@ var ctx = document.getElementById('myBarChart');
 var chartRam = new Chart(ctx, {
   type: 'horizontalBar',
   data: {
-    labels: ['Consumo Ram'],
+    labels: ['RAM'],
     datasets: [
       {
         label: 'Livre',
-        data: [67.8],
+        // data: [67.8],
         backgroundColor: '#D6E9C6',
       },
       {
         label: 'Usado',
-        data: [20.7],
+        // data: [20.7],
         backgroundColor: '#e74a3b',
       }
     ]
@@ -330,8 +330,9 @@ function atualizaChartRamComParametro(selecionado) {
             else {
                 chartRam.data.datasets[0].data = dados.utilizado
                 chartRam.data.datasets[1].data = dados.livre
-                console.log(dados.utilizado + dados.livre)
+                // console.log(dados.utilizado + dados.livre)
                 chartRam.options.scales.xAxes[0].ticks.max =  parseInt(dados.utilizado) + parseInt(dados.livre)
+                chartRam.options.scales.xAxes[0].ticks.fontSize =  18
             }
             chartRam.update()
         })
