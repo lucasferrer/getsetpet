@@ -39,3 +39,8 @@ hr{
     padding: 0;
 	border-top: 1px solid white;
 }
+
+#voltar{
+    width: 100px;
+    border-radius: 10%;
+}
