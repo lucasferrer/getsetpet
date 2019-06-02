@@ -6,11 +6,12 @@ var chartStatus = new Chart(ctxStatus, {
     datasets: [{
       data: [],
       backgroundColor: ['#e74a3b', '#f6c23e', '#1cc88a'],
-      hoverBackgroundColor: ['green', 'yellow', 'red'],
+      hoverBackgroundColor: ['darkred', 'yellow', 'green'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
   options: {
+    responsive: true,
     maintainAspectRatio: false,
     tooltips: {
       backgroundColor: "rgb(255,255,255)",
@@ -21,50 +22,48 @@ var chartStatus = new Chart(ctxStatus, {
       yPadding: 15,
       displayColors: false,
       caretPadding: 10,
+
     },
     legend: {
       display: false
     },
     cutoutPercentage: 80,
+
   },
 });
 
 new Chart(document.getElementById("chartHistoricoStatus"), {
+
   type: 'line',
   data: {
-    labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
+    labels: ['02/06','03/06','04/06','05/06','06/06','07/06','08/06'],
     datasets: [{
-      data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-      label: "Africa",
-      borderColor: "#3e95cd",
-      fill: false
+      data: [3, 7, 4, 7, 3, 8, 6],
+      label: "Ok",
+      borderColor: "#1cc88a",
+      fill: false,
+      borderWidth: 4,
     }, {
-      data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267],
-      label: "Asia",
-      borderColor: "#8e5ea2",
-      fill: false
+      data: [2, 4, 6, 2, 4, 5, 2],
+      label: "Alerta",
+      borderColor: "#f6c23e",
+      fill: false,
+      borderWidth: 4,
     }, {
-      data: [168, 170, 178, 190, 203, 276, 408, 547, 675, 734],
-      label: "Europe",
-      borderColor: "#3cba9f",
-      fill: false
-    }, {
-      data: [40, 20, 10, 16, 24, 38, 74, 167, 508, 784],
-      label: "Latin America",
-      borderColor: "#e8c3b9",
-      fill: false
-    }, {
-      data: [6, 3, 2, 2, 7, 26, 82, 172, 312, 433],
-      label: "North America",
-      borderColor: "#c45850",
-      fill: false
-    }
+      data: [10, 4, 5, 6, 8, 2, 7],
+      label: "Grave",
+      borderColor: "#e74a3b",
+      fill: false,
+      borderWidth: 4,
+    },
     ]
   },
   options: {
+    responsive: true,
     title: {
       display: true,
-      text: 'World population per region (in millions)'
+      text: 'Quantidades de cada ocorrência por dia',
+      fontsize: 18
     }
   }
 });
@@ -115,12 +114,12 @@ function atualizaChartHdComParametro(dados) {
     else if (dados[i] == "Ok") {
       ok++
     }
-    
+
     chartStatus.data.datasets[0].data = [grave, alerta, ok];
     chartStatus.update()
-    
+
   }
-  
+
 }
 
 var markers = []
@@ -171,15 +170,15 @@ function getStatus(geocoder, map) {
       continue;
     }
   }
-  
+
   var address = objLastStatus.endereco;
-  
+
   for (i = 0; i < address.length; i++) {
     geocodeAddress(geocoder, map, address, markerTitle, icons, objLastStatus, i);
   }
   // markers = []
   atualizaChartHdComParametro(markerTitle)
-  
+
 }
 // CRIAÇÃO GOOGLE MAPS DA LOCALIDADE 
 
@@ -189,20 +188,20 @@ function initMap() {
     center: { lat: -34.397, lng: 150.644 },
   });
   var geocoder = new google.maps.Geocoder();
-  
+
   var styles =
-  [
-    {
-      featureType: 'poi.business',
-      stylers: [{ visibility: 'off' }]
-    },
-    {
-      featureType: 'transit',
-      elementType: 'labels.icon',
-      stylers: [{ visibility: 'off' }]
-    }
-  ]
-  
+    [
+      {
+        featureType: 'poi.business',
+        stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'transit',
+        elementType: 'labels.icon',
+        stylers: [{ visibility: 'off' }]
+      }
+    ]
+
   var stylesNight = [
     {
       featureType: 'poi.business',
@@ -303,7 +302,7 @@ function initMap() {
 
   getStatus(geocoder, map)
   setInterval(function () { getStatus(geocoder, map); }, 60000)
-  
+
 }
 
 
@@ -339,46 +338,46 @@ function geocodeAddress(geocoder, resultsMap, address, markerTitle, icons, objLa
         '</p>' +
         '</div>' +
         '</div>';
-        
-        var contentString = windowContent;
-        
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString,
-          maxWidth: 250
-        });
-        
-        var titleMarker = markerTitle[i]
-        // console.log(titleMarker)
-        
-            // marker.setMap(null)
-            
-            // Deletes all markers in the array by removing references to them.
-            var marker = new google.maps.Marker({
-              map: resultsMap,
-              position: results[0].geometry.location,
-              title: titleMarker,
-              icon: baseIconUrl
-            });
-            marker.addListener('click', function () {
-              if (lastWindow) lastWindow.close();
-              infowindow.open(resultsMap, marker);
-              lastWindow = infowindow;
-              // infowindow.open(resultsMap, marker);
-            });
-            markers.push(marker)
-            console.log(markers.length)
-            // console.log(marker)
-            
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-          }
-        });
-        
+
+      var contentString = windowContent;
+
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString,
+        maxWidth: 250
+      });
+
+      var titleMarker = markerTitle[i]
+      // console.log(titleMarker)
+
+      // marker.setMap(null)
+
+      // Deletes all markers in the array by removing references to them.
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location,
+        title: titleMarker,
+        icon: baseIconUrl
+      });
+      marker.addListener('click', function () {
+        if (lastWindow) lastWindow.close();
+        infowindow.open(resultsMap, marker);
+        lastWindow = infowindow;
+        // infowindow.open(resultsMap, marker);
+      });
+      markers.push(marker)
+      console.log(markers.length)
+      // console.log(marker)
+
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+
 }
 if (markers.length != 0) {
   for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
-    }
-    markers = []
+    markers[i].setMap(null);
   }
+  markers = []
+}
 

@@ -224,6 +224,26 @@ router.get('/ram/:idMaquina?', (req, res, next) => {
     })
 })
 
+router.get('/historicoStatusOkRam', (req, res, next) => {
+  dados= {}
+  arrayOk = [];
+  arrayData = [];
+  global.conn.request()
+  .query(`select count(status_ram) as num_ok_ram, datepart(day,data_hora) as dia_do_mes from status where status_ram = 'Ok' and data_hora 
+  between cast(dateadd(DAY, -7, convert(smalldatetime, getdate())) as smalldatetime) 
+  and cast(dateadd(DAY, +0, convert(smalldatetime, getdate())) as smalldatetime) group by datepart(day,data_hora)`)
+  .then((results) => {
+    var dadosOkRam = results.recordset;
+    var d = new Date();
+    for (var i = 0; i < dados.length; i++) {
+
+      arrayOk[i] = dados[i].num_ok_ram;
+      arrayData[i] = dados[i].dia_do_mes;
+
+    }
+  })
+})
+
 router.get('/laststatus', (req, res, next) => {
   dados = {}
   arrayRam = [];

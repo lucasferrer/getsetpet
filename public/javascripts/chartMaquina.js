@@ -84,6 +84,7 @@ var chartHd = new Chart(ctxHd, {
             yPadding: 15,
             displayColors: false,
             caretPadding: 10,
+            responsive: true,
         },
         legend: {
             display: true
@@ -151,7 +152,7 @@ var barOptions_stacked = {
             ticks: {
                 beginAtZero:true,
                 fontFamily: "'Open Sans Bold', sans-serif",
-                fontSize:16,
+                fontSize:12,
                 // max:8000
             },
             scaleLabel:{
@@ -166,11 +167,11 @@ var barOptions_stacked = {
                 display:false,
                 color: "#fff",
                 zeroLineColor: "#fff",
-                zeroLineWidth: 0
+                zeroLineWidth: 2
             },
             ticks: {
                 fontFamily: "'Open Sans Bold', sans-serif",
-                fontSize:11,
+                fontSize:24,
             },
             stacked: true
         }]
@@ -184,7 +185,7 @@ var barOptions_stacked = {
             var chartInstance = this.chart;
             var ctx = chartInstance.ctx;
             // ctx.textAlign = "center";
-            ctx.font = "18px Open Sans";
+            ctx.font = "12px Open Sans";
             ctx.fillStyle = "#fff";
 
             Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
@@ -232,21 +233,23 @@ var chartRam = new Chart(ctx, {
       {
         label: 'Livre',
         // data: [67.8],
-        backgroundColor: '#D6E9C6',
+        backgroundColor: '#33FF33',
       },
       {
         label: 'Usado',
         // data: [20.7],
-        backgroundColor: '#e74a3b',
+        backgroundColor: '#FF3333',
       }
     ]
   },
   options: {
+      responsive: true,
     scales: {
       xAxes: [{ stacked: true }],
       yAxes: [{ stacked: true }]
     }
   }
+  
 });
 
 
