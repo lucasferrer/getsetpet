@@ -72,38 +72,12 @@ $(document).ready(function () {
   setTimeout(function () { initMap(); }, 1000)
 })
 
-// function atualizaChartCPUComParametro(selecionado) {
-//   if (isNaN(selecionado)) {
-//     limparCampos()
-//     return;
-//   }
 
-//   $.ajax({
-//     method: "GET",
-//     url: "/dashboard/cpu/" + selecionado,
-
-//   })
-//     .done(function (data) {
-//       dados = data;
-//       if (dados.cpu.length == 0) {
-//         limparCampos();
-//         return;
-//       }
-//       else {
-//         chartCpu.data.datasets[0].data = dados.cpu;
-//         chartCpu.data.labels = dados.date;
-//       }
-//       chartCpu.update()
-//     })
-
-// }
-
-function atualizaChartHdComParametro(dados) {
+function atualizaChartStatusPieComParametro(dados) {
 
   grave = 0
   alerta = 0
   ok = 0
-  console.log(dados)
   for (i = 0; i < dados.length; i++) {
     if (dados[i] == "Grave") {
       grave++
@@ -177,7 +151,7 @@ function getStatus(geocoder, map) {
     geocodeAddress(geocoder, map, address, markerTitle, icons, objLastStatus, i);
   }
   // markers = []
-  atualizaChartHdComParametro(markerTitle)
+  atualizaChartStatusPieComParametro(markerTitle)
 
 }
 // CRIAÇÃO GOOGLE MAPS DA LOCALIDADE 
@@ -365,7 +339,6 @@ function geocodeAddress(geocoder, resultsMap, address, markerTitle, icons, objLa
         // infowindow.open(resultsMap, marker);
       });
       markers.push(marker)
-      console.log(markers.length)
       // console.log(marker)
 
     } else {

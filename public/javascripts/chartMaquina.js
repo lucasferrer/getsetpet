@@ -132,99 +132,9 @@ var chartCpu = new Chart(ctxCpu, cfgChartCpu);
 
 
 // CHART DE CONSUMO DE MEMORIA RAM options.scales.xAxes[1].max
-var barOptions_stacked = {
-    tooltips: {
-        enabled: false
-    },
-    hover :{
-        animationDuration:0
-    },
-    scales: {
-        xAxes: [{
-            layout: {
-                      padding: {
-                        // left: 10,
-                        right: 25,
-                        top: 25,
-                        bottom: 0
-                      }
-                    },
-            ticks: {
-                beginAtZero:true,
-                fontFamily: "'Open Sans Bold', sans-serif",
-                fontSize:12,
-                // max:8000
-            },
-            scaleLabel:{
-                display:false
-            },
-            gridLines: {
-            }, 
-            stacked: true
-        }],
-        yAxes: [{
-            gridLines: {
-                display:false,
-                color: "#fff",
-                zeroLineColor: "#fff",
-                zeroLineWidth: 2
-            },
-            ticks: {
-                fontFamily: "'Open Sans Bold', sans-serif",
-                fontSize:24,
-            },
-            stacked: true
-        }]
-    },
-    legend:{
-        display:false
-    },
-    
-    animation: {
-        onComplete: function () {
-            var chartInstance = this.chart;
-            var ctx = chartInstance.ctx;
-            // ctx.textAlign = "center";
-            ctx.font = "12px Open Sans";
-            ctx.fillStyle = "#fff";
 
-            Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
-                var meta = chartInstance.controller.getDatasetMeta(i);
-                Chart.helpers.each(meta.data.forEach(function (bar, index) {
-                    data = dataset.data[index];
-                    if(i==0){
-                        ctx.fillText(data, 50, bar._model.y+4);
-                    } else {
-                        ctx.fillText(data, bar._model.x-25, bar._model.y+4);
-                    }
-                }),this)
-            }),this);
-        }
-    },
-    pointLabelFontFamily : "Quadon Extra Bold",
-    scaleFontFamily : "Quadon Extra Bold",
-};
-
-// var ctx = document.getElementById("myBarChart");
-// var chartRam = new Chart(ctx, {
-//     type: 'horizontalBar',
-//     data: {
-//         labels: ["RAM"],
-        
-//         datasets: [{
-//             // data: [727],
-//             backgroundColor: "rgba(63,103,126,1)",
-//             hoverBackgroundColor: "rgba(50,90,100,1)"
-//         },{
-//             // data: [238],
-//             backgroundColor: "rgba(163,103,126,1)",
-//             hoverBackgroundColor: "rgba(140,85,100,1)"
-//         }]
-//     },
-//     options: barOptions_stacked,
-// });
 var ctx = document.getElementById('myBarChart');
-
+ctx.height = 300
 var chartRam = new Chart(ctx, {
   type: 'horizontalBar',
   data: {
@@ -256,11 +166,14 @@ var chartRam = new Chart(ctx, {
 $('#loja').change(function () {
     limparCampos()
     selecionado = parseInt($('#loja option:selected').val());
-
-
     atualizaChartCPUComParametro(selecionado)
     atualizaChartHdComParametro(selecionado)
     atualizaChartRamComParametro(selecionado)
+    setInterval(function () {
+        atualizaChartCPUComParametro(selecionado)
+        atualizaChartHdComParametro(selecionado)
+        atualizaChartRamComParametro(selecionado)
+    }, 10000)
 
 
 })
@@ -334,7 +247,7 @@ function atualizaChartRamComParametro(selecionado) {
                 chartRam.data.datasets[0].data = dados.utilizado
                 chartRam.data.datasets[1].data = dados.livre
                 // console.log(dados.utilizado + dados.livre)
-                chartRam.options.scales.xAxes[0].ticks.max =  parseInt(dados.utilizado) + parseInt(dados.livre)
+                // chartRam.options.scales.xAxes[0].ticks.max =  parseInt(dados.utilizado) + parseInt(dados.livre)
                 chartRam.options.scales.xAxes[0].ticks.fontSize =  18
             }
             chartRam.update()
@@ -345,39 +258,10 @@ function atualizaChartRamComParametro(selecionado) {
 function limparCampos() {
     var arrayVazio = [];
     chartCpu.data.datasets[0].data = arrayVazio;
+    chartRam.data.datasets[0].data = arrayVazio;
+    chartRam.data.datasets[1].data = arrayVazio;
+    chartHd.data.datasets[0].data = arrayVazio;
 
     chartCpu.update();
-
-
-    // document.getElementById('tempDashboard').innerHTML = "";
-    // document.getElementById('umiDashboard').innerHTML = "";
-
-    // document.getElementById('mediaUmi').innerHTML = "";
-    // document.getElementById('maxUmi').innerHTML = "";
-    // document.getElementById('minUmi').innerHTML = "";
-
-    // document.getElementById('mediaTemp').innerHTML = "";
-    // document.getElementById('maxTemp').innerHTML = "";
-    // document.getElementById('minTemp').innerHTML = "";
-
-    // document.getElementById('nomeArduino').innerHTML = "";
-
-    // document.getElementById("mensagemArduino").innerHTML = `<b>Selecione um Refrigerador.</b>`;
-
-    // document.getElementById('logradouroLoc').innerHTML = "";
-    // document.getElementById('cidadeLoc').innerHTML = "";
-    // document.getElementById('bairroLoc').innerHTML = "";
-
-    // var arrayVazio = [];
-    // chartTemp.data.datasets[0].data = arrayVazio;
-    // chartUmi.data.datasets[0].data = arrayVazio;
-    // chartTemp.update();
-    // chartUmi.update();
-
-    // contadorTempMax = 0;
-    // contadorTempMin = 0;
-    // contadorUmiMax = 0;
-    // contadorUmiMin = 0;
-
 
 }
