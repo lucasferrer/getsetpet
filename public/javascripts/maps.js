@@ -36,7 +36,7 @@ new Chart(document.getElementById("chartHistoricoStatus"), {
 
   type: 'line',
   data: {
-    labels: ['02/06','03/06','04/06','05/06','06/06','07/06','08/06'],
+    labels: ['27/05','28/05','29/05','30/05','31/05','01/06','02/06'],
     datasets: [{
       data: [3, 7, 4, 7, 3, 8, 6],
       label: "Ok",

@@ -51,8 +51,8 @@ router.get('/logout', function(req, res){
 // ROTAS PAGINAS
 
 router.get('/', function(req, res, next) {
-  console.log("teste")
-  res.render('public', { title: 'ADMIN' });
+  // console.log("teste")
+  res.render('public', { title: title });
 });
 router.get('/index', authenticationMiddleware(), function(req, res, next) {
   res.render('index', { title: title , username: req.session.passport.user[0].NOME});

@@ -173,7 +173,7 @@ $('#loja').change(function () {
         atualizaChartCPUComParametro(selecionado)
         atualizaChartHdComParametro(selecionado)
         atualizaChartRamComParametro(selecionado)
-    }, 10000)
+    }, 5000)
 
 
 })
