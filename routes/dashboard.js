@@ -225,24 +225,66 @@ router.get('/ram/:idMaquina?', (req, res, next) => {
 })
 
 router.get('/historicoStatusOkRam', (req, res, next) => {
-  dados= {}
-  arrayOk = [];
-  arrayData = [];
+  for(var i = 0 ; i < 7; i++){
+    var dados = [];
+  numeroOcorrenciasOk = [];
+  numeroOcorrenciasAlerta = [];
+  numeroOcorrenciasGrave = [];
+  diaOcorrencia = [];
   global.conn.request()
-  .query(`select count(status_ram) as num_ok_ram, datepart(day,data_hora) as dia_do_mes from status where status_ram = 'Ok' and data_hora 
-  between cast(dateadd(DAY, -7, convert(smalldatetime, getdate())) as smalldatetime) 
-  and cast(dateadd(DAY, +0, convert(smalldatetime, getdate())) as smalldatetime) group by datepart(day,data_hora)`)
+  .query(`select sum(
+    CASE status_ram
+    WHEN 'Ok' THEN 1
+    ELSE 0 END +
+    CASE status_hd
+    WHEN 'Ok' THEN 1
+    ELSE 0 END +
+    CASE status_cpu
+    WHEN 'Ok' THEN 1
+    ELSE 0 END) as qtd_ok,
+    sum(
+    CASE status_ram
+    WHEN 'Alerta' THEN 1
+    ELSE 0 END +
+    CASE status_hd
+    WHEN 'Alerta' THEN 1
+    ELSE 0 END +
+    CASE status_cpu
+    WHEN 'Alerta' THEN 1
+    ELSE 0 END) as qtd_alerta,
+    sum(
+    CASE status_ram
+    WHEN 'Grave' THEN 1
+    ELSE 0 END +
+    CASE status_hd
+    WHEN 'Grave' THEN 1
+    ELSE 0 END +
+    CASE status_cpu
+    WHEN 'Grave' THEN 1
+    ELSE 0 END) as qtd_grave
+from status where 
+data_hora between cast(dateadd(DAY, -${i+3}, convert(smalldatetime, getdate())) as smalldatetime) 
+  and cast(dateadd(DAY, -${i}, convert(smalldatetime, getdate())) as smalldatetime)
+and (
+status_ram = 'Ok' or status_hd = 'Ok' or status_cpu = 'Ok' or
+status_ram = 'Alerta' or status_hd = 'Alerta' or status_cpu = 'Alerta' or
+status_ram = 'Grave' or status_hd = 'Grave' or status_cpu = 'Grave'
+)`)
   .then((results) => {
-    var dadosOkRam = results.recordset;
-    var d = new Date();
-    for (var i = 0; i < dados.length; i++) {
-
-      arrayOk[i] = dados[i].num_ok_ram;
-      arrayData[i] = dados[i].dia_do_mes;
-
-    }
+    dados = results.recordset;
+    console.log(dados);/* 
+    numeroOcorrenciasOk[i] = dados.qtd_ok[i];
+    numeroOcorrenciasAlerta[i] = dados.qtd_alerta[i];
+    numeroOcorrenciasGrave[i] = dados.qtd_grave[i]; */
+    numeroOcorrenciasOk.push(dados.qtd_ok[0]);
+    console.log(numeroOcorrenciasOk);
   })
+  
+}
+
+
 })
+
 
 router.get('/laststatus', (req, res, next) => {
   dados = {}
