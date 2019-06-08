@@ -224,15 +224,18 @@ router.get('/ram/:idMaquina?', (req, res, next) => {
     })
 })
 
-router.get('/historicoStatusOkRam', (req, res, next) => {
-  for(var i = 0 ; i < 7; i++){
-    var dados = [];
+router.get('/historicoStatus', (req, res, next) => {
+
   numeroOcorrenciasOk = [];
   numeroOcorrenciasAlerta = [];
   numeroOcorrenciasGrave = [];
   diaOcorrencia = [];
-  global.conn.request()
-  .query(`select sum(
+
+  for (let i = 1; i <= 7; i++) {
+    let dados;
+
+    global.conn.request()
+      .query(`select sum(
     CASE status_ram
     WHEN 'Ok' THEN 1
     ELSE 0 END +
@@ -263,24 +266,42 @@ router.get('/historicoStatusOkRam', (req, res, next) => {
     WHEN 'Grave' THEN 1
     ELSE 0 END) as qtd_grave
 from status where 
-data_hora between cast(dateadd(DAY, -${i+3}, convert(smalldatetime, getdate())) as smalldatetime) 
-  and cast(dateadd(DAY, -${i}, convert(smalldatetime, getdate())) as smalldatetime)
+data_hora between cast(dateadd(MINUTE, -${i + 1}, convert(smalldatetime, getdate())) as smalldatetime) 
+  and cast(dateadd(MINUTE, -${i}, convert(smalldatetime, getdate())) as smalldatetime)
 and (
 status_ram = 'Ok' or status_hd = 'Ok' or status_cpu = 'Ok' or
 status_ram = 'Alerta' or status_hd = 'Alerta' or status_cpu = 'Alerta' or
 status_ram = 'Grave' or status_hd = 'Grave' or status_cpu = 'Grave'
 )`)
-  .then((results) => {
-    dados = results.recordset;
-    console.log(dados);/* 
-    numeroOcorrenciasOk[i] = dados.qtd_ok[i];
-    numeroOcorrenciasAlerta[i] = dados.qtd_alerta[i];
-    numeroOcorrenciasGrave[i] = dados.qtd_grave[i]; */
-    numeroOcorrenciasOk.push(dados.qtd_ok[0]);
-    console.log(numeroOcorrenciasOk);
-  })
+      .then((results) => {
+        dados = results.recordset;
+        numeroOcorrenciasOk.push(dados[0].qtd_ok);
+        numeroOcorrenciasAlerta.push(dados[0].qtd_alerta);
+        numeroOcorrenciasGrave.push(dados[0].qtd_grave);
+
+        if (i == 7) {
+          dados_formatados = {
+            qtdOk: numeroOcorrenciasOk,
+            qtdAlerta: numeroOcorrenciasAlerta,
+            qtdGrave: numeroOcorrenciasGrave
+          }
+
+          console.log(dados_formatados);
+          res.send(dados_formatados);
+
+          i =0;
+
+        }
+      })
+      .catch((err) => {
+
+        console.log(err)
+        res.render('error');
   
-}
+      })
+  }
+
+
 
 
 })
@@ -321,7 +342,7 @@ router.get('/laststatus', (req, res, next) => {
         arrayCpu[i] = dados[i].STATUS_CPU;
         arrayHD[i] = dados[i].STATUS_HD;
         arrayHD[i] = dados[i].STATUS_HD;
-        arrayEndereco[i] = dados[i].LOGRADOURO +", "+ dados[i].NUMERO_ENDERECO +", "+ dados[i].BAIRRO +", "+ dados[i].CIDADE +", "+ dados[i].ESTADO;
+        arrayEndereco[i] = dados[i].LOGRADOURO + ", " + dados[i].NUMERO_ENDERECO + ", " + dados[i].BAIRRO + ", " + dados[i].CIDADE + ", " + dados[i].ESTADO;
         arrayNomeLoja[i] = dados[i].NM_LOJA
       }
       // // COLOCANDO OS INFORMAÇÕES TRATADAS DENTRO DO OBJ DADOS PARA FAZER O ENVIO

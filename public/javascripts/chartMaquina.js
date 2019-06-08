@@ -198,7 +198,7 @@ function atualizaChartCPUComParametro(selecionado) {
                 chartCpu.data.datasets[0].data = dados.cpu;
                 chartCpu.data.labels = dados.date;
             }
-            chartCpu.update()
+            chartCpu.update();
         })
 
 }

@@ -32,25 +32,25 @@ var chartStatus = new Chart(ctxStatus, {
   },
 });
 
-new Chart(document.getElementById("chartHistoricoStatus"), {
+var chartHistorico = new Chart(document.getElementById("chartHistoricoStatus"), {
 
   type: 'line',
   data: {
-    labels: ['27/05','28/05','29/05','30/05','31/05','01/06','02/06'],
+    labels: [],
     datasets: [{
-      data: [3, 7, 4, 7, 3, 8, 6],
+      data: [],
       label: "Ok",
       borderColor: "#1cc88a",
       fill: false,
       borderWidth: 4,
     }, {
-      data: [2, 4, 6, 2, 4, 5, 2],
+      data: [],
       label: "Alerta",
       borderColor: "#f6c23e",
       fill: false,
       borderWidth: 4,
     }, {
-      data: [10, 4, 5, 6, 8, 2, 7],
+      data: [],
       label: "Grave",
       borderColor: "#e74a3b",
       fill: false,
@@ -95,6 +95,26 @@ function atualizaChartStatusPieComParametro(dados) {
   }
 
 }
+
+function atualizaChartHistorico(){
+  $.ajax({
+    method: "GET",
+    url: "/dashboard/historicoStatus/",
+
+})
+    .done(function (data) {
+        dados = data;
+        chartHistorico.data.datasets[0].data = data.qtdOk;
+        chartHistorico.data.datasets[1].data = data.qtdAlerta;
+        chartHistorico.data.datasets[2].data = data.qtdGrave;      
+        chartHistorico.data.labels = ['30/06','29/06','28/06','27/06','26/06','25/06','24/06',]
+        
+        chartHistorico.update();
+    })
+
+}
+
+setInterval(atualizaChartHistorico, 10000);
 
 var markers = []
 function getStatus(geocoder, map) {
@@ -151,7 +171,7 @@ function getStatus(geocoder, map) {
     geocodeAddress(geocoder, map, address, markerTitle, icons, objLastStatus, i);
   }
   // markers = []
-  atualizaChartStatusPieComParametro(markerTitle)
+  atualizaChartStatusPieComParametro(markerTitle);
 
 }
 // CRIAÇÃO GOOGLE MAPS DA LOCALIDADE 
