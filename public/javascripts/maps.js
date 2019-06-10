@@ -32,25 +32,25 @@ var chartStatus = new Chart(ctxStatus, {
   },
 });
 
-var chartHistorico = new Chart(document.getElementById("chartHistoricoStatus"), {
+new Chart(document.getElementById("chartHistoricoStatus"), {
 
   type: 'line',
   data: {
-    labels: [],
+    labels: ['20/06','21/06','22/06','23/06','24/06','25/06','26/06'],
     datasets: [{
-      data: [],
+      data: [3, 7, 4, 7, 3, 8, 6],
       label: "Ok",
       borderColor: "#1cc88a",
       fill: false,
       borderWidth: 4,
     }, {
-      data: [],
+      data: [2, 4, 6, 2, 4, 5, 2],
       label: "Alerta",
       borderColor: "#f6c23e",
       fill: false,
       borderWidth: 4,
     }, {
-      data: [],
+      data: [10, 4, 5, 6, 8, 2, 7],
       label: "Grave",
       borderColor: "#e74a3b",
       fill: false,
