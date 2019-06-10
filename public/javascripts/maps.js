@@ -2,7 +2,7 @@ var ctxStatus = document.getElementById("myPieChart").getContext('2d');
 var chartStatus = new Chart(ctxStatus, {
   type: 'doughnut',
   data: {
-    labels: ['grave', 'alerta', 'ok'],
+    labels: ['Grave', 'Alerta', 'Ok'],
     datasets: [{
       data: [],
       backgroundColor: ['#e74a3b', '#f6c23e', '#1cc88a'],
